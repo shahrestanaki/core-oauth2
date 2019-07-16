@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+      http://dozer.sourceforge.net/schema/beanmapping.xsd">
+    <mapping wildcard="false">
+        <class-a>com.model.entity.User</class-a>
+        <class-b>com.dozer.entity.UsersDozer</class-b>
+        <field>
+            <a>id</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>name</a>
+            <b>name</b>
+        </field>
+        <field>
+            <a>famili</a>
+            <b>famili</b>
+        </field>
+        <field>
+            <a>username</a>
+            <b>username</b>
+        </field>
+        <field>
+            <a>status</a>
+            <b>status</b>
+        </field>
+        <field>
+            <a>rules</a>
+            <b>rules</b>
+        </field>
+        <field>
+            <a>createdate</a>
+            <b>createdate</b>
+        </field>
+        <field>
+            <a>changedate</a>
+            <b>changedate</b>
+        </field>
+        <field>
+            <a>avatar</a>
+            <b>avatar</b>
+        </field>
+    </mapping>
+</mappings>
