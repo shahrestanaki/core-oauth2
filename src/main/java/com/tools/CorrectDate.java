@@ -1,4 +1,4 @@
-package com.config;
+package com.tools;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

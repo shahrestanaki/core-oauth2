@@ -1,4 +1,4 @@
-package com.config.exception;
+package com.exception;
 
 import org.codehaus.jackson.map.ObjectMapper;
 

@@ -1,7 +1,7 @@
-package com.config.exception;
+package com.exception;
 
 
-import com.config.CorrectDate;
+import com.tools.CorrectDate;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.validation.BindingResult;
@@ -30,12 +30,12 @@ public class MethodArgumentNotValidExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorDetails methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
-        List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
+        List<FieldError> fieldErrors = result.getFieldErrors();
         return processFieldErrors(fieldErrors);
     }
 
     //private Error processFieldErrors(List<org.springframework.validation.FieldError> fieldErrors) {
-    private ErrorDetails processFieldErrors(List<org.springframework.validation.FieldError> fieldErrors) {
+    private ErrorDetails processFieldErrors(List<FieldError> fieldErrors) {
         /*Error error = new Error(BAD_REQUEST.value(), "validation error");
         for (org.springframework.validation.FieldError fieldError: fieldErrors) {
             error.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());

@@ -1,4 +1,4 @@
-package com.config;
+package com.tools;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
