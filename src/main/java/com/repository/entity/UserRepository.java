@@ -24,4 +24,5 @@ public interface UserRepository extends JpaRepository<User, Integer>, UserReposi
     @Query(value = "UPDATE User u set status =0 , lockdate = SYSDATE() where u.id = :userId",
             nativeQuery = true)
     void lockUser(@Param("userId") Long userId);*/
+    
 }
