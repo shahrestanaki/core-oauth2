@@ -8,11 +8,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
 public interface UserDetailsRepository extends CrudRepository<UserInfo, String> {
-    public UserInfo findByUserNameAndEnabled(String userName, short enabled);
+    public UserInfo findByUserNameAndActive(String userName, boolean active);
 
-    public List<UserInfo> findAllByEnabled(short enabled);
+    public List<UserInfo> findAllByActive(boolean active);
 
     public UserInfo findById(Integer id);
 //

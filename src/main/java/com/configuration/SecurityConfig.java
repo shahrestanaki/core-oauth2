@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,11 +26,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests().antMatchers("/oauth/token")
-                .permitAll().anyRequest().authenticated()
-                .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/user").hasRole("ADMIN");
+        /* http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests().antMatchers(*/
+        http.authorizeRequests().antMatchers(
+                "/soap/**", "/register/**", "/approve/**", "/forget/**", "/cdn/**", "/cus1/**",
+                "/hystrix.stream", "/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/configuration/ui",
+                "/swagger-resources", "/v2/api-docs", "/swagger-resources/configuration/ui",
+                "/swagger-resources/configuration/security", "/css/**", "/js/**", "/images/jcaptcha",
+                "/templates/doc/**",
+                "/oauth/token",
+                "/user/sign-up/**"
+                  )
+                .permitAll().anyRequest().authenticated();
     }
 
     @Bean

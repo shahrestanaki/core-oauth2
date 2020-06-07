@@ -3,27 +3,37 @@ package com.service;
 
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
+import com.view.SingUpDto;
+import com.view.UserSignUpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
-@Transactional
+@Service
 public class UserInfoService {
 
     @Autowired
     private UserDetailsRepository userDatailsRepository;
 
+    public UserSignUpResponse singup(SingUpDto singUp) {
+        UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()), singUp.getRole().name());
+        userDatailsRepository.save(userInfo);
+
+        UserSignUpResponse result = new UserSignUpResponse();
+        result.setResult(HttpStatus.OK);
+        return null;
+    }
+
+
     public UserInfo getUserInfoByUserName(String userName) {
-        short enabled = 1;
-        return userDatailsRepository.findByUserNameAndEnabled(userName, enabled);
+        return userDatailsRepository.findByUserNameAndActive(userName, true);
     }
 
     public List<UserInfo> getAllActiveUserInfo() {
-        return userDatailsRepository.findAllByEnabled((short) 1);
+        return userDatailsRepository.findAllByActive(true);
     }
 
     public UserInfo getUserInfoById(Integer id) {
@@ -40,7 +50,7 @@ public class UserInfoService {
         userInfo.setUserName(userRecord.getUserName());
         userInfo.setPassword(userRecord.getPassword());
         /*userInfo.setRole(userRecord.getRole());*/
-        userInfo.setEnabled(userRecord.getEnabled());
+        userInfo.setActive(userRecord.isActive());
         return userDatailsRepository.save(userInfo);
     }
 

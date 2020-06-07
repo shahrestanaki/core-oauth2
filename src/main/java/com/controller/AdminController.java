@@ -1,4 +1,4 @@
-package com.contoller;
+package com.controller;
 
 import com.model.UserInfo;
 import com.service.UserInfoService;
@@ -13,11 +13,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class UserController {
+@RequestMapping("/adminAccess")
+public class AdminController {
     @Autowired
     private UserInfoService userService;
 
-    @GetMapping("/user")
+    @GetMapping("/getAllUser")
     @PreAuthorize("hasRole('ROLE_USER')")
     public Object getAllUser(@RequestHeader HttpHeaders requestHeader) {
         List<UserInfo> userInfos = userService.getAllActiveUserInfo();
@@ -27,7 +28,7 @@ public class UserController {
         return userInfos;
     }
 
-    @PostMapping("/user")
+    @PostMapping("/addUser")
     public UserInfo addUser(@RequestBody UserInfo userRecord) {
         return userService.addUser(userRecord);
     }
