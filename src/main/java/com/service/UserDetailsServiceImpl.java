@@ -19,9 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserInfo userInfo = userInfoDAO.getUserInfoByUserName(userName);
-        //Collection<? extends GrantedAuthority> authority =  userInfo.getAuthorities(); //new SimpleGrantedAuthority( String.join(",",userInfo.getRoles()));
-        //return new User(userInfo.getUserName(), userInfo.getPassword(), authority);
+        UserInfo userInfo = userInfoDAO.getUserByToken(userName);
         GrantedAuthority authority = new SimpleGrantedAuthority(userInfo.getRole());
         return new User(userInfo.getUserName(), userInfo.getPassword(), Arrays.asList(authority));
     }

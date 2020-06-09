@@ -61,6 +61,7 @@ public class UserInfo implements Serializable {
         this.role = role;
         this.active = true;
         this.lockStatus = false;
+        this.createDate = new Date();
     }
 
 }
