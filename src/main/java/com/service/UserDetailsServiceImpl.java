@@ -15,7 +15,7 @@ import java.util.Arrays;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private UserInfoService userInfoDAO;
+    private com.service.UserInfoService userInfoDAO;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

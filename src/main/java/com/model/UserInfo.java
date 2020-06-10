@@ -31,22 +31,22 @@ public class UserInfo implements Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean active;
 
-    @Column(name = "wrongPass")
+    @Column(name = "wrong_Pass")
     private Integer wrongPass;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "lockDate")
+    @Column(name = "lock_Date")
     private Date lockDate;
 
-    @Column(name = "lockStatus")
+    @Column(name = "lock_Status")
     private boolean lockStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "createDate", nullable = false)
+    @Column(name = "create_Date", nullable = false)
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "changeDate")
+    @Column(name = "change_Date")
     private Date changeDate;
 
     @Column(name = "role", length = 50,nullable = false)

@@ -1,4 +1,4 @@
-package com.configuration;
+package com.config.security;
 
 import com.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class AuthenticationEventListener extends DaoAuthenticationProvider {
         } catch (BadCredentialsException ex) {
 
             String presentedPassword = authentication.getCredentials().toString();
-            if (!getPasswordEncoder().isPasswordValid(userDetails.getPassword(), presentedPassword, getSaltSource())) {
+            if (!getPasswordEncoder().matches(userDetails.getPassword(), presentedPassword)) {
                 userInfoService.submitWrongPassword(userDetails.getUsername());
             }
 

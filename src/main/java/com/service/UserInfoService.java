@@ -1,7 +1,8 @@
 package com.service;
 
 
-import com.exception.AppException;
+import
+        com.exception.AppException;
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
 import com.tools.CorrectDate;
@@ -132,8 +133,8 @@ public class UserInfoService {
         this.update(userInfo);
     }
 
-    public UserGeneralResponse changePassword(ChangePasswordDto changePassword){
-        if(changePassword.getNewPassword().equals(changePassword.getRepeatPassword())){
+    public UserGeneralResponse changePassword(ChangePasswordDto changePassword) {
+        if (changePassword.getNewPassword().equals(changePassword.getRepeatPassword())) {
             throw new AppException("ui.changepassword.notequals");
         }
         //getUserInfoByUserName();
