@@ -1,11 +1,11 @@
 package com.service;
 
 
-import
-        com.exception.AppException;
+import com.exception.AppException;
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
 import com.tools.CorrectDate;
+import com.tools.TokenRead;
 import com.view.ChangePasswordDto;
 import com.view.SingUpDto;
 import com.view.UserGeneralResponse;
@@ -135,9 +135,20 @@ public class UserInfoService {
 
     public UserGeneralResponse changePassword(ChangePasswordDto changePassword) {
         if (!changePassword.getNewPassword().equals(changePassword.getRepeatPassword())) {
-            throw new AppException("ui.changepassword.notequals");
+            throw new AppException("changepassword.notequals");
         }
-        //getUserInfoByUserName();
-        return null;
+        UserInfo userInfo = getUserInfoByUserName(TokenRead.getUserName());
+        if (!userInfo.isActive()) {
+            throw new AppException("user.Deactivate");
+        } else if (userInfo.isLockStatus()) {
+            throw new AppException("user.islock");
+        } else if (!new BCryptPasswordEncoder().matches(changePassword.getOldPassword(), userInfo.getPassword())) {
+            throw new AppException("changepassword.oldPassword.error");
+        }
+
+        userInfo.setPassword(new BCryptPasswordEncoder().encode(changePassword.getNewPassword()));
+        this.update(userInfo);
+
+        return new UserGeneralResponse(HttpStatus.OK);
     }
 }

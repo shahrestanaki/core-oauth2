@@ -33,7 +33,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 "/templates/doc/**",
                 "/core/oauth/token",
                 "/users/sign-up").permitAll();
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
     }
 
 }
