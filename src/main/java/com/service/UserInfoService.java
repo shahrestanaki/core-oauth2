@@ -5,11 +5,13 @@ import com.exception.AppException;
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
 import com.tools.CorrectDate;
+import com.tools.GeneralTools;
 import com.tools.TokenRead;
 import com.view.ChangePasswordDto;
 import com.view.SingUpDto;
 import com.view.UserGeneralResponse;
-import com.view.UserSignUpResponse;
+import com.view.UserSingupView;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,13 +27,17 @@ public class UserInfoService {
     @Autowired
     private UserDetailsRepository userDatailsRepository;
 
-    public UserSignUpResponse singup(SingUpDto singUp) {
-        UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()), singUp.getRole().name());
+    @Autowired
+    private TokenService tokenService;
+    private Mapper mapper;
+
+    public UserSingupView singup(SingUpDto singUp) {
+        UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
+                singUp.getRole().name(), singUp.getOwnerKey());
+        userInfo.setPrivateKey(GeneralTools.creatVerifyCode("number", 20));
         userDatailsRepository.save(userInfo);
 
-        UserSignUpResponse result = new UserSignUpResponse();
-        result.setResult(HttpStatus.OK);
-        return result;
+        return mapper.map(userInfo, UserSingupView.class);
     }
 
     public UserInfo getUserInfoByUserName(String userName) {
@@ -149,6 +155,7 @@ public class UserInfoService {
         userInfo.setPassword(new BCryptPasswordEncoder().encode(changePassword.getNewPassword()));
         this.update(userInfo);
 
+        tokenService.logOut(userInfo.getUserName());
         return new UserGeneralResponse(HttpStatus.OK);
     }
 }

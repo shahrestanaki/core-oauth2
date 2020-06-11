@@ -1,10 +1,7 @@
 package com.web;
 
 import com.service.UserInfoService;
-import com.view.ChangePasswordDto;
-import com.view.SingUpDto;
-import com.view.UserGeneralResponse;
-import com.view.UserSignUpResponse;
+import com.view.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +24,17 @@ public class UserController {
     private UserInfoService userInfoSrv;
 
     @PostMapping("/sign-up")
-    public UserSignUpResponse singup(@Valid @RequestBody SingUpDto singUp) {
+    public UserSingupView singup(@Valid @RequestBody SingUpDto singUp) {
         return userInfoSrv.singup(singUp);
     }
 
     @PostMapping("/change-Password")
     public UserGeneralResponse changePassword(@Valid @RequestBody ChangePasswordDto changePassword) {
         return userInfoSrv.changePassword(changePassword);
+    }
+
+    @PostMapping("/forget-Password")
+    public String forgetPassword(@Valid @RequestBody ForgetPasswordDto forgetPasswordDto) {
+        return null;//////////// userInfoSrv.forgetPassword(forgetPasswordDto);
     }
 }

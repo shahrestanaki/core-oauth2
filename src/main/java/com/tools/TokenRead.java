@@ -4,6 +4,7 @@ import com.exception.AppException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -14,9 +15,10 @@ public class TokenRead {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
                     .getAuthentication();
-
-            return authentication.getPrincipal().toString();
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            return user.getUsername();
         } catch (Exception exp) {
+            exp.printStackTrace();
             throw new AppException("token.error.getusername");
         }
     }

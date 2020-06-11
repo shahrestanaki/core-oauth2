@@ -52,16 +52,23 @@ public class UserInfo implements Serializable {
     @Column(name = "role", length = 50,nullable = false)
     private String role;
 
+    @Column(name = "private_Key", length = 50,nullable = false)
+    private String privateKey;
+
+    @Column(name = "owner_Key", length = 50,nullable = false)
+    private String ownerKey;
+
     public UserInfo(){
 
     }
-    public UserInfo(String userName,String password,String role){
+    public UserInfo(String userName,String password,String role,String ownerKey){
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.active = true;
         this.lockStatus = false;
         this.createDate = new Date();
+        this.ownerKey = ownerKey;
     }
 
 }

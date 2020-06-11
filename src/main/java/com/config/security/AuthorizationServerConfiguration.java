@@ -15,8 +15,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
@@ -46,13 +46,19 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         this.userDetailsService = userDetailsService;
     }
 
-    @Bean
+    /*@Bean
     public TokenStore tokenStore() {
         if (tokenStore == null) {
             tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
         }
         return tokenStore;
+    }*/
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(this.dataSource);
     }
+
 
     @Bean
     public DefaultTokenServices tokenServices(final TokenStore tokenStore,
