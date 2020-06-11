@@ -1,3 +1,5 @@
+https://blog.marcosbarbero.com/centralized-authorization-jwt-spring-boot2/
+
 CREATE TABLE OAUTH_ACCESS_TOKEN
 (
   TOKEN_ID           VARCHAR2(255 BYTE),

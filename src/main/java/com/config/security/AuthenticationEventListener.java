@@ -25,20 +25,7 @@ public class AuthenticationEventListener extends DaoAuthenticationProvider {
             if (!getPasswordEncoder().matches(userDetails.getPassword(), presentedPassword)) {
                 userInfoService.submitWrongPassword(userDetails.getUsername());
             }
-
             throw new BadCredentialsException(this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
-        }
-
-
-        // Check the confirmed status
-/*        if (!user.) {
-            throw new AccountNotConfirmedException("Account is not confirmed yet.");
-        }*/
-    }
-
-    public static class AccountNotConfirmedException extends AuthenticationException {
-        public AccountNotConfirmedException(String message) {
-            super(message);
         }
     }
 }

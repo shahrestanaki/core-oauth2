@@ -134,7 +134,7 @@ public class UserInfoService {
     }
 
     public UserGeneralResponse changePassword(ChangePasswordDto changePassword) {
-        if (changePassword.getNewPassword().equals(changePassword.getRepeatPassword())) {
+        if (!changePassword.getNewPassword().equals(changePassword.getRepeatPassword())) {
             throw new AppException("ui.changepassword.notequals");
         }
         //getUserInfoByUserName();
