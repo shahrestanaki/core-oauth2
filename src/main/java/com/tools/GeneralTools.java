@@ -3,7 +3,7 @@ package com.tools;
 import java.util.Random;
 
 public class GeneralTools {
-    public static String creatVerifyCode(String type, int targetStringLength) {
+    public static String createRandom(String type, int targetStringLength) {
         int leftLimit = 0;
         int rightLimit = 0;
         switch (type) {
@@ -19,6 +19,10 @@ public class GeneralTools {
                 leftLimit = 65;
                 rightLimit = 90;
                 break;
+            case "password":
+                return createRandom("lowercase", 3) +
+                        createRandom("number", 1) +
+                        createRandom("uppercase", 3);
             default:
                 break;
         }

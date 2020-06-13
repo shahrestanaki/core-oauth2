@@ -23,7 +23,7 @@ public class HandlerException extends ResponseEntityExceptionHandler {
     MessageSource messageSource;
 
 
-    // error handle for @Valid
+
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         Map<String, String> params = new HashMap<>();
@@ -33,6 +33,16 @@ public class HandlerException extends ResponseEntityExceptionHandler {
         return new ResponseEntity(params, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(AppException.class)
+    public final ResponseEntity<Object> handleAppException(Exception ex, WebRequest request) {
+        Map<String, String> params = new HashMap<>();
+        params.put("code", ErrorEnum.ValidBusiness.toString());
+        params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
+        params.put("message", ex.getLocalizedMessage());
+        return new ResponseEntity(params, HttpStatus.BAD_REQUEST);
+    }
+
+    // error handle for @Valid
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> params = new HashMap<>();

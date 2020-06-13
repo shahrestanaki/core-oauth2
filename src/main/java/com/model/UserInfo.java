@@ -52,9 +52,6 @@ public class UserInfo implements Serializable {
     @Column(name = "role", length = 50,nullable = false)
     private String role;
 
-    @Column(name = "private_Key", length = 50,nullable = false)
-    private String privateKey;
-
     @Column(name = "owner_Key", length = 50,nullable = false)
     private String ownerKey;
 

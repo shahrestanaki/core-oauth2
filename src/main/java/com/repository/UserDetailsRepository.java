@@ -4,7 +4,6 @@ import com.model.UserInfo;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -14,9 +13,11 @@ public interface UserDetailsRepository extends CrudRepository<UserInfo, String> 
 
     UserInfo findByUserNameAndActive(String userName, boolean active);
 
-      List<UserInfo> findAllByActive(boolean active);
+    List<UserInfo> findAllByActive(boolean active);
 
-      UserInfo findById(Integer id);
+    UserInfo findById(Integer id);
 
-      void deleteById(Integer id);
+    void deleteById(Integer id);
+
+    UserInfo findByUserNameAndOwnerKey(String username, String owner);
 }
