@@ -15,6 +15,11 @@ import java.security.Principal;
 @Api(value = "users")
 public class UserController {
 
+    @GetMapping("/info")
+    public String information(){
+        return " this information system";
+    }
+
     @GetMapping("/me")
     public ResponseEntity<Principal> get(final Principal principal) {
         return ResponseEntity.ok(principal);
