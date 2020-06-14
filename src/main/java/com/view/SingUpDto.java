@@ -14,8 +14,4 @@ public class SingUpDto {
     @Length(min = 5, max = 250)
     private String password;
 
-    @Length(min = 5, max = 250)
-    private String ownerKey;
-
-    private RoleEnum role;
 }

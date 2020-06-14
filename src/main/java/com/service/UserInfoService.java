@@ -28,12 +28,12 @@ public class UserInfoService {
     private TokenService tokenService;
     private Mapper mapper;
 
-    public UserSingupView singup(SingUpDto singUp) {
+    public UserGeneralResponse singup(SingUpDto singUp) {
+        String manager = TokenRead.getUserName();
         UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
-                singUp.getRole().name(), singUp.getOwnerKey());
+                "USER_ROLE", manager);
         userRepo.save(userInfo);
-
-        return mapper.map(userInfo, UserSingupView.class);
+        return new UserGeneralResponse(HttpStatus.OK);
     }
 
     public UserInfo getUserInfoByUserName(String userName) {
@@ -160,7 +160,7 @@ public class UserInfoService {
     }
 
     public String resetPassword(ForgetPasswordDto forget, String by) {
-        UserInfo user = userRepo.findByUserNameAndOwnerKey(forget.getUserName(), forget.getOwnerKey());
+        UserInfo user = userRepo.findByUserNameAndManager(forget.getUserName(), TokenRead.getUserName());
         if (user == null) {
             throw new AppException("user.not.found");
         } else if (!user.isActive()) {
@@ -176,7 +176,7 @@ public class UserInfoService {
 
     public UserGeneralResponse changeStatusUser(ChangeStatusUserDto statusUser) {
         UserGeneralResponse response = new UserGeneralResponse(HttpStatus.OK);
-        UserInfo user = userRepo.findByUserNameAndOwnerKey(statusUser.getUserName(), statusUser.getOwnerKey());
+        UserInfo user = userRepo.findByUserNameAndManager(statusUser.getUserName(), TokenRead.getUserName());
         if (user.isActive() == statusUser.isActive() || user.isLockStatus() == statusUser.isLock()) {
             return response;
         }
@@ -189,7 +189,7 @@ public class UserInfoService {
             user.setLockDate(null);
         }
 
-        this.update(user, "changeStatusUser", "owner");
+        this.update(user, "changeStatusUser", "management");
         return response;
     }
 }

@@ -1,6 +1,7 @@
 package com.model;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,7 +19,12 @@ public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name = "users_sequence", strategy = "sequence", parameters = {
+            @org.hibernate.annotations.Parameter(name = "sequenceName", value = "users_sequence"),
+            @org.hibernate.annotations.Parameter(name = "initial_value", value = "20"),
+            @org.hibernate.annotations.Parameter(name = "allocationSize", value = "1"),
+    })
+    @GeneratedValue(generator = "users_sequence", strategy=GenerationType.SEQUENCE)
     @Column(name = "id", length = 25, nullable = false)
     private Long id;
 
@@ -52,20 +58,20 @@ public class UserInfo implements Serializable {
     @Column(name = "role", length = 50,nullable = false)
     private String role;
 
-    @Column(name = "owner_Key", length = 50,nullable = false)
-    private String ownerKey;
+    @Column(name = "manager", length = 50,nullable = false)
+    private String manager;
 
     public UserInfo(){
 
     }
-    public UserInfo(String userName,String password,String role,String ownerKey){
+    public UserInfo(String userName,String password,String role,String manager){
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.active = true;
         this.lockStatus = false;
         this.createDate = new Date();
-        this.ownerKey = ownerKey;
+        this.manager = manager;
     }
 
 }

@@ -9,9 +9,6 @@ public class ChangeStatusUserDto {
     @UserName
     @Length(min = 5, max = 50)
     private String userName;
-    @Length(min = 5, max = 50)
-    private String ownerKey;
-
     private boolean active;
     private boolean lock;
 }

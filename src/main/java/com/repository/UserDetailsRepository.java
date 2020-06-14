@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserDetailsRepository extends CrudRepository<UserInfo, String> {
+public interface UserDetailsRepository extends CrudRepository<UserInfo, Long> {
 
     UserInfo findByUserName(String userName);
 
@@ -19,5 +19,5 @@ public interface UserDetailsRepository extends CrudRepository<UserInfo, String> 
 
     void deleteById(Integer id);
 
-    UserInfo findByUserNameAndOwnerKey(String username, String owner);
+    UserInfo findByUserNameAndManager(String username, String manager);
 }

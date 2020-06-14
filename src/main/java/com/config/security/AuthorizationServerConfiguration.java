@@ -1,6 +1,7 @@
 package com.config.security;
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +37,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private JwtAccessTokenConverter jwtAccessTokenConverter;
     private TokenStore tokenStore;
 
-    public AuthorizationServerConfiguration(final DataSource dataSource, final PasswordEncoder passwordEncoder,
+    public AuthorizationServerConfiguration(@Qualifier("dataSource") DataSource dataSource, final PasswordEncoder passwordEncoder,
                                             final AuthenticationManager authenticationManager, final SecurityProperties securityProperties,
                                             final UserDetailsService userDetailsService) {
         this.dataSource = dataSource;
