@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -31,6 +32,17 @@ public class TokenRead {
             return authentication.getAuthorities();
         } catch (Exception exp) {
             throw new AppException("token.error.getRols");
+        }
+    }
+
+    public static String getManagement() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext()
+                    .getAuthentication();
+            return ((OAuth2Authentication) authentication).getOAuth2Request().getClientId();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new AppException("token.error.getManagement");
         }
     }
 }

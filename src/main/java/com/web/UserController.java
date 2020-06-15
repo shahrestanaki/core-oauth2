@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -65,5 +66,12 @@ public class UserController {
     @PostMapping("/change-Status-User")
     public UserGeneralResponse changeStatusUser(@Valid @RequestBody ChangeStatusUserDto statusUser) {
         return userInfoSrv.changeStatusUser(statusUser);
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGE')")
+    @ApiOperation(value = "ROLE:MANAGE-This method return list of users.")
+    @GetMapping("/list")
+    public List<UserView> list(@Valid @RequestBody ChangeStatusUserDto statusUser) {
+        return null;///userInfoSrv.changeStatusUser(statusUser);
     }
 }

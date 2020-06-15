@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserInfoService {
@@ -87,7 +86,7 @@ public class UserInfoService {
 
     public void submitUserLogin(String userName) {
         UserInfo userInfo = getUserInfoByUserName(userName);
-        if (userInfo.isLockStatus()) {
+        if (userInfo.isLockStatus() || userInfo.getWrongPass() > 0) {
             userInfo.setLockStatus(false);
             userInfo.setLockDate(null);
             userInfo.setWrongPass(0);
@@ -113,7 +112,8 @@ public class UserInfoService {
         user.setPassword(new BCryptPasswordEncoder().encode(changePassword.getNewPassword()));
         this.update(user, "changePassword", "user");
 
-        tokenService.logOut(user.getUserName());
+        String management = TokenRead.getManagement();
+        tokenService.logOut(user.getUserName(), management);
         return new UserGeneralResponse(HttpStatus.OK);
     }
 
