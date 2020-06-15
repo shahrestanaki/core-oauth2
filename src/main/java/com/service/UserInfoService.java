@@ -1,6 +1,7 @@
 package com.service;
 
 
+import com.enump.RoleEnum;
 import com.exception.AppException;
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +33,7 @@ public class UserInfoService {
     public UserGeneralResponse singup(SingUpDto singUp) {
         String manager = TokenRead.getUserName();
         UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
-                "USER_ROLE", manager);
+                RoleEnum.ROLE_USER.name(), manager);
         userRepo.save(userInfo);
         return new UserGeneralResponse(HttpStatus.OK);
     }
@@ -53,50 +55,6 @@ public class UserInfoService {
             throw new AppException("User Deactivate as " + user.getChangeDate());
         }
         return user;
-    }
-
-    @Deprecated
-    public List<UserInfo> getAllActiveUserInfo() {
-        return userRepo.findAllByActive(true);
-    }
-
-    @Deprecated
-    public UserInfo getUserInfoById(Integer id) {
-        return userRepo.findById(id);
-    }
-
-    @Deprecated
-    public UserInfo addUser(UserInfo userInfo) {
-        userInfo.setPassword(new BCryptPasswordEncoder().encode(userInfo.getPassword()));
-        return userRepo.save(userInfo);
-    }
-
-    @Deprecated
-    public UserInfo updateUser(Integer id, UserInfo userRecord) {
-        UserInfo userInfo = userRepo.findById(id);
-        userInfo.setUserName(userRecord.getUserName());
-        userInfo.setPassword(userRecord.getPassword());
-        /*userInfo.setRole(userRecord.getRole());*/
-        userInfo.setActive(userRecord.isActive());
-        return userRepo.save(userInfo);
-    }
-
-    @Deprecated
-    public void deleteUser(Integer id) {
-        userRepo.deleteById(id);
-    }
-
-    public UserInfo updatePassword(Integer id, UserInfo userRecord) {
-        UserInfo userInfo = userRepo.findById(id);
-        userInfo.setPassword(userRecord.getPassword());
-        return userRepo.save(userInfo);
-    }
-
-    @Deprecated
-    public UserInfo updateRole(Integer id, UserInfo userRecord) {
-        UserInfo userInfo = userRepo.findById(id);
-        /*userInfo.setRole(userRecord.getRole());*/
-        return userRepo.save(userInfo);
     }
 
     private UserInfo update(UserInfo userInfo, String opration, String by) {
@@ -191,5 +149,14 @@ public class UserInfoService {
 
         this.update(user, "changeStatusUser", "management");
         return response;
+    }
+
+
+    //TODO
+    public UserGeneralResponse singUpManagement(@Valid SingUpDto singUp) {
+        UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
+                RoleEnum.ROLE_MANAGE.name(), "Admin");
+        userRepo.save(userInfo);
+        return new UserGeneralResponse(HttpStatus.OK);
     }
 }
