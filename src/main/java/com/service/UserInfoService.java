@@ -7,6 +7,7 @@ import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
 import com.tools.CorrectDate;
 import com.tools.GeneralTools;
+import com.tools.ICustomMapper;
 import com.tools.TokenRead;
 import com.view.*;
 import org.dozer.Mapper;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserInfoService {
@@ -27,7 +30,9 @@ public class UserInfoService {
 
     @Autowired
     private TokenService tokenService;
-    private Mapper mapper;
+
+    @Autowired
+    ICustomMapper mapper;
 
     public UserGeneralResponse singup(SingUpDto singUp) {
         String manager = TokenRead.getUserName();
@@ -158,5 +163,14 @@ public class UserInfoService {
                 RoleEnum.ROLE_MANAGE.name(), "Admin");
         userRepo.save(userInfo);
         return new UserGeneralResponse(HttpStatus.OK);
+    }
+
+    public SimplePageResponse<UserView> list(SearchCriteriaList search) {
+        HashSet<SearchCriteria> filter = search.getSearch();
+        search.setSearch(filter);
+        SimplePageResponse<UserInfo> listNews = userRepo.findAllCriteria(search);
+        List<UserView> listView = mapper.mapList(listNews.getContent(), UserView.class);
+        SimplePageResponse<UserView> result = new SimplePageResponse<>(listView, listNews.getCount());
+        return result;
     }
 }

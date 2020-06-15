@@ -1,6 +1,7 @@
 package com.web;
 
 import com.service.UserInfoService;
+import com.tools.GeneralTools;
 import com.view.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,7 +72,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_MANAGE')")
     @ApiOperation(value = "ROLE:MANAGE-This method return list of users.")
     @GetMapping("/list")
-    public List<UserView> list(@Valid @RequestBody ChangeStatusUserDto statusUser) {
-        return null;///userInfoSrv.changeStatusUser(statusUser);
+    public SimplePageResponse<UserView>  list(@Valid @RequestBody UserSearchView search) {
+        return userInfoSrv.list(GeneralTools.convertToCriteriaList(search, ""));
     }
 }
