@@ -35,7 +35,8 @@ public class TokenRead {
         }
     }
 
-    public static String getManagement() {
+    /**management*/
+    public static String getClientId() {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
                     .getAuthentication();

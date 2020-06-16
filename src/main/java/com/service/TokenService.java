@@ -12,12 +12,12 @@ public class TokenService {
     JdbcTemplate jdbcTemplate;
 
     @Transactional
-    public void logOut(String username, String management) {
-        String sql = "delete from oauth_refresh_token where TOKEN_ID = (select REFRESH_TOKEN from oauth_access_token where USER_NAME = '" + username + "' and CLIENT_ID = '" + management + "')";
+    public void logOut(String username, String clientId) {
+        String sql = "delete from oauth_refresh_token where TOKEN_ID = (select REFRESH_TOKEN from oauth_access_token where USER_NAME = '" + username + "' and CLIENT_ID = '" + clientId + "')";
         jdbcTemplate.update(sql);
         System.out.println(sql);
 
-        sql = " delete from oauth_access_token where USER_NAME = '" + username + "' and CLIENT_ID = '" + management + "'";
+        sql = " delete from oauth_access_token where USER_NAME = '" + username + "' and CLIENT_ID = '" + clientId + "'";
         System.out.println(sql);
         jdbcTemplate.update(sql);
     }

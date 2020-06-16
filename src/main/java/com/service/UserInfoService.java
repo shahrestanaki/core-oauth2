@@ -5,12 +5,12 @@ import com.enump.RoleEnum;
 import com.exception.AppException;
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
+import com.service.mapper.UserMapper;
 import com.service.search.SearchCriteria;
 import com.service.search.SearchCriteriaList;
 import com.tools.CorrectDate;
 import com.tools.GeneralTools;
 import com.tools.TokenRead;
-import com.service.mapper.UserMapper;
 import com.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -115,8 +115,7 @@ public class UserInfoService {
         user.setPassword(new BCryptPasswordEncoder().encode(changePassword.getNewPassword()));
         this.update(user, "changePassword", "user");
 
-        String management = TokenRead.getManagement();
-        tokenService.logOut(user.getUserName(), management);
+        tokenService.logOut(user.getUserName(), TokenRead.getClientId());
         return new UserGeneralResponse(HttpStatus.OK);
     }
 
@@ -132,6 +131,7 @@ public class UserInfoService {
         String newPassword = GeneralTools.createRandom("password", 7);
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         this.update(user, "resetPassword", by);
+        tokenService.logOut(user.getUserName(), TokenRead.getClientId());
         return newPassword;
     }
 
@@ -151,6 +151,7 @@ public class UserInfoService {
         }
 
         this.update(user, "changeStatusUser", "management");
+        tokenService.logOut(user.getUserName(), TokenRead.getClientId());
         return response;
     }
 
@@ -165,7 +166,7 @@ public class UserInfoService {
 
     public SimplePageResponse<UserView> list(SearchCriteriaList search) {
         HashSet<SearchCriteria> filter = search.getSearch();
-        filter.add(new SearchCriteria("manager",":",TokenRead.getUserName()));
+        filter.add(new SearchCriteria("manager", ":", TokenRead.getUserName()));
         search.setSearch(filter);
 
         SimplePageResponse<UserInfo> listNews = userRepo.findAllCriteria(search);
