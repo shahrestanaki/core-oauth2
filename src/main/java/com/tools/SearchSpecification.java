@@ -45,6 +45,12 @@ public class SearchSpecification<T> implements Specification<T> {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
                 return builder.like(
                         root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+            } else if (root.get(criteria.getKey()).getJavaType() == Boolean.class) {
+                if (Boolean.parseBoolean(criteria.getValue().toString())) {
+                    return builder.isTrue(root.get(criteria.getKey()));
+                } else {
+                    return builder.isFalse(root.get(criteria.getKey()));
+                }
             } else {
                 return builder.equal(root.get(criteria.getKey()), criteria.getValue());
             }

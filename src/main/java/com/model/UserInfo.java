@@ -35,7 +35,7 @@ public class UserInfo implements Serializable {
     private String password;
 
     @Column(name = "enabled", nullable = false)
-    private boolean active;
+    private Boolean active;
 
     @Column(name = "wrong_Pass")
     private Integer wrongPass;
@@ -45,7 +45,7 @@ public class UserInfo implements Serializable {
     private Date lockDate;
 
     @Column(name = "lock_Status")
-    private boolean lockStatus;
+    private Boolean lockStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_Date", nullable = false)

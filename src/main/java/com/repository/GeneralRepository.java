@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -18,9 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 
 @NoRepositoryBean
-public interface GeneralRepository<T, PK extends Serializable> extends CrudRepository<T, PK> {
+public interface GeneralRepository<T, PK extends Serializable> extends JpaRepository<T, PK>,JpaSpecificationExecutor<T> {
 
-    Page<T> findAll(Specification<T> var1, Pageable var2);
+    //Page<T> findAll(Specification<T> var1, Pageable var2);
 
     default SimplePageResponse<T> findAllCriteria(SearchCriteriaList search) {
         Sort.Direction direction;
@@ -37,7 +39,7 @@ public interface GeneralRepository<T, PK extends Serializable> extends CrudRepos
         SimplePageResponse<T> temp = new SimplePageResponse<>();
         Specification<T> combinedSpecs = creatFilter(search.getSearch());
 
-        Page results = this.findAll(combinedSpecs, pageable);
+        Page results = findAll(combinedSpecs, pageable);
         List<T> educationFieldViews = results.getContent();
         temp.setContent(educationFieldViews);
         temp.setCount(results.getTotalElements());
@@ -65,7 +67,7 @@ public interface GeneralRepository<T, PK extends Serializable> extends CrudRepos
                         });
             } else {
                 SearchSpecification newItem = new SearchSpecification(new SearchCriteria(item.getKey(), item.getOperation(), item.getValue()));
-                combinedSpecs[0] = combinedSpecs[0] == null ? Specifications.where(newItem) : combinedSpecs[0].and(newItem);
+                combinedSpecs[0] = combinedSpecs[0] == null ? Specification.where(newItem) : combinedSpecs[0].and(newItem);
             }
         });
         return combinedSpecs[0];

@@ -71,7 +71,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_MANAGE')")
     @ApiOperation(value = "ROLE:MANAGE-This method return list of users.")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public SimplePageResponse<UserView>  list(@Valid @RequestBody UserSearchView search) {
         return userInfoSrv.list(GeneralTools.convertToCriteriaList(search, ""));
     }

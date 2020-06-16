@@ -1,7 +1,10 @@
 package com;
 
+import org.dozer.DozerBeanMapper;
+import org.dozer.loader.api.BeanMappingBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import javax.annotation.PostConstruct;
@@ -27,4 +30,18 @@ public class OAuth2ServerJwtApplication {
         SpringApplication.run(OAuth2ServerJwtApplication.class, args);
     }
 
+    @Bean
+    public DozerBeanMapper mapper() throws Exception {
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        mapper.addMapping(objectMappingBuilder);
+        return mapper;
+    }
+
+    BeanMappingBuilder objectMappingBuilder = new BeanMappingBuilder() {
+        @Override
+        protected void configure() {
+            mapping(Bean1.class, Bean2.class)
+                    .fields("id", "id").fields("name", "name");
+        }
+    };
 }

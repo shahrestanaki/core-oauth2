@@ -50,12 +50,12 @@ public class UserInfoService {
         UserInfo user = userRepo.findByUserName(userName);
         if (user == null) {
             throw new AppException("User not Exist");
-        } else if (user.isLockStatus()) {
+        } else if (user.getLockStatus()) {
             Date unlockDate = CorrectDate.addToDate(user.getLockDate(), 10, Calendar.MINUTE);
             if (unlockDate.after(new Date())) {
                 throw new AppException("User is Locked as " + user.getLockDate());
             }
-        } else if (!user.isActive()) {
+        } else if (!user.getActive()) {
             throw new AppException("User Deactivate as " + user.getChangeDate());
         }
         return user;
@@ -72,7 +72,7 @@ public class UserInfoService {
         int count = userInfo.getWrongPass() == null ? 0 : userInfo.getWrongPass();
 
         if (count >= 3) {// max wrong
-            if (userInfo.isLockStatus()) {// update lock date
+            if (userInfo.getLockStatus()) {// update lock date
                 Date unlockDate = CorrectDate.addToDate(userInfo.getLockDate(), 10, Calendar.MINUTE);
                 if (unlockDate.before(new Date())) {
                     userInfo.setLockDate(new Date());
@@ -91,7 +91,7 @@ public class UserInfoService {
 
     public void submitUserLogin(String userName) {
         UserInfo userInfo = getUserInfoByUserName(userName);
-        if (userInfo.isLockStatus() || userInfo.getWrongPass() > 0) {
+        if (userInfo.getLockStatus() || userInfo.getWrongPass() > 0) {
             userInfo.setLockStatus(false);
             userInfo.setLockDate(null);
             userInfo.setWrongPass(0);
@@ -106,9 +106,9 @@ public class UserInfoService {
         UserInfo user = getUserInfoByUserName(TokenRead.getUserName());
         if (user == null) {
             throw new AppException("user.not.found");
-        } else if (!user.isActive()) {
+        } else if (!user.getActive()) {
             throw new AppException("user.Deactivate");
-        } else if (user.isLockStatus()) {
+        } else if (user.getLockStatus()) {
             throw new AppException("user.islock");
         } else if (!new BCryptPasswordEncoder().matches(changePassword.getOldPassword(), user.getPassword())) {
             throw new AppException("changepassword.oldPassword.error");
@@ -126,9 +126,9 @@ public class UserInfoService {
         UserInfo user = userRepo.findByUserNameAndManager(forget.getUserName(), TokenRead.getUserName());
         if (user == null) {
             throw new AppException("user.not.found");
-        } else if (!user.isActive()) {
+        } else if (!user.getActive()) {
             throw new AppException("user.Deactivate");
-        } else if (user.isLockStatus()) {
+        } else if (user.getLockStatus()) {
             throw new AppException("user.islock");
         }
         String newPassword = GeneralTools.createRandom("password", 7);
@@ -140,7 +140,7 @@ public class UserInfoService {
     public UserGeneralResponse changeStatusUser(ChangeStatusUserDto statusUser) {
         UserGeneralResponse response = new UserGeneralResponse(HttpStatus.OK);
         UserInfo user = userRepo.findByUserNameAndManager(statusUser.getUserName(), TokenRead.getUserName());
-        if (user.isActive() == statusUser.isActive() || user.isLockStatus() == statusUser.isLock()) {
+        if (user.getActive() == statusUser.isActive() || user.getLockStatus() == statusUser.isLock()) {
             return response;
         }
         user.setActive(statusUser.isActive());

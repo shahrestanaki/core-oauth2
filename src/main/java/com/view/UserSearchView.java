@@ -11,10 +11,10 @@ import java.util.Date;
 public class UserSearchView  extends  SearchCriteriaList implements Serializable{
     private static final long serialVersionUID = 1L;
     private String userName;
-    private boolean active;
+    private Boolean active;
     private Integer wrongPass;
    // private Date lockDate;
-    private boolean lockStatus;
+    private Boolean lockStatus;
    // private Date createDate;
  //   private Date changeDate;
     private String role;
