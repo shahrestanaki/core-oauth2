@@ -1,4 +1,4 @@
-package com.view;
+package com.service.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,18 +19,12 @@ public class SearchCriteriaList {
     @Max(40L)
     @JsonProperty("pageSize")
     private int size = 10;
-//    private Sort.Direction sort1 ;
     private String sort ;
 
     public SearchCriteriaList() {
 
     }
 
-//    public SearchCriteriaList(int page, int size, Sort.Direction sort) {
-//        this.page = page-1;
-//        this.size = size;
-//        this.sort1 = sort;
-//    }
     public SearchCriteriaList(int page, int size, String sort) {
         this.page = page-1;
         this.size = size;

@@ -1,6 +1,5 @@
-package com.tools;
+package com.service.search;
 
-import com.view.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;

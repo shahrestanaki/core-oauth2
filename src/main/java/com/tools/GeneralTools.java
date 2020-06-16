@@ -1,7 +1,7 @@
 package com.tools;
 
-import com.view.SearchCriteria;
-import com.view.SearchCriteriaList;
+import com.service.search.SearchCriteria;
+import com.service.search.SearchCriteriaList;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;

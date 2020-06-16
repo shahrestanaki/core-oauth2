@@ -5,12 +5,13 @@ import com.enump.RoleEnum;
 import com.exception.AppException;
 import com.model.UserInfo;
 import com.repository.UserDetailsRepository;
+import com.service.search.SearchCriteria;
+import com.service.search.SearchCriteriaList;
 import com.tools.CorrectDate;
 import com.tools.GeneralTools;
-import com.tools.ICustomMapper;
 import com.tools.TokenRead;
+import com.service.mapper.UserMapper;
 import com.view.*;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,9 +31,6 @@ public class UserInfoService {
 
     @Autowired
     private TokenService tokenService;
-
-    @Autowired
-    ICustomMapper mapper;
 
     public UserGeneralResponse singup(SingUpDto singUp) {
         String manager = TokenRead.getUserName();
@@ -167,9 +165,11 @@ public class UserInfoService {
 
     public SimplePageResponse<UserView> list(SearchCriteriaList search) {
         HashSet<SearchCriteria> filter = search.getSearch();
+        filter.add(new SearchCriteria("manager",":",TokenRead.getUserName()));
         search.setSearch(filter);
+
         SimplePageResponse<UserInfo> listNews = userRepo.findAllCriteria(search);
-        List<UserView> listView = mapper.mapList(listNews.getContent(), UserView.class);
+        List<UserView> listView = UserMapper.INSTANCE.listMap(listNews.getContent());
         SimplePageResponse<UserView> result = new SimplePageResponse<>(listView, listNews.getCount());
         return result;
     }

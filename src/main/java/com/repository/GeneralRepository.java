@@ -1,18 +1,16 @@
 package com.repository;
 
-import com.tools.SearchSpecification;
-import com.view.SearchCriteria;
-import com.view.SearchCriteriaList;
+import com.service.search.SearchSpecification;
+import com.service.search.SearchCriteria;
+import com.service.search.SearchCriteriaList;
 import com.view.SimplePageResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;

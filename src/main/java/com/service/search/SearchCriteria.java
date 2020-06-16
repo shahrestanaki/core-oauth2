@@ -1,4 +1,4 @@
-package com.view;
+package com.service.search;
 
 import lombok.Data;
 
