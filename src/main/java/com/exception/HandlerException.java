@@ -1,5 +1,6 @@
 package com.exception;
 
+import com.enump.ErrorEnum;
 import com.tools.CorrectDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -22,20 +23,30 @@ public class HandlerException extends ResponseEntityExceptionHandler {
     MessageSource messageSource;
 
 
-    // error handle for @Valid
+
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         Map<String, String> params = new HashMap<>();
-        params.put("code", "2");
+        params.put("code", ErrorEnum.General.toString());
         params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
         params.put("message", ex.getLocalizedMessage());
         return new ResponseEntity(params, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(AppException.class)
+    public final ResponseEntity<Object> handleAppException(Exception ex, WebRequest request) {
+        Map<String, String> params = new HashMap<>();
+        params.put("code", ErrorEnum.ValidBusiness.toString());
+        params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
+        params.put("message", ex.getLocalizedMessage());
+        return new ResponseEntity(params, HttpStatus.BAD_REQUEST);
+    }
+
+    // error handle for @Valid
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> params = new HashMap<>();
-        params.put("code", "1");
+        params.put("code", ErrorEnum.ValidArg.toString());
         params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             params.put("message", error.getDefaultMessage());

@@ -1,4 +1,4 @@
-package com.config;
+package com.config.config;
 
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ import springfox.documentation.swagger.web.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collections;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
+/*https://springfox.github.io/springfox/docs/snapshot/*/
 @Configuration
 @EnableSwagger2
-//@ComponentScan(basePackageClasses = {"com.web"})
 public class SwaggerConfig {
 
     @Bean
@@ -54,8 +54,20 @@ public class SwaggerConfig {
                                 .message("500 message")
                                 .responseModel(new ModelRef("Error"))
                                 .build()))
-                .securitySchemes(newArrayList(apiKey()))
-                .securityContexts(newArrayList(securityContext()))
+                /*.securitySchemes(newArrayList(apiKey()))
+                .securityContexts(newArrayList(securityContext()))*/
+                .securitySchemes(Collections.singletonList(new ApiKey("JWT", "Authorization", "header")))
+                .securityContexts(Collections.singletonList(
+                        SecurityContext.builder()
+                                .securityReferences(
+                                        Collections.singletonList(SecurityReference.builder()
+                                                .reference("JWT")
+                                                .scopes(new AuthorizationScope[0])
+                                                .build()
+                                        )
+                                )
+                                .build())
+                )
                 .enableUrlTemplating(true)
                 /*.globalOperationParameters(
                         newArrayList(new ParameterBuilder()
@@ -73,8 +85,8 @@ public class SwaggerConfig {
     @Autowired
     private TypeResolver typeResolver;
 
-    private ApiKey apiKey() {
-        return new ApiKey("mykey", "api_key", "header");
+    /*private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
     }
 
     private SecurityContext securityContext() {
@@ -82,16 +94,14 @@ public class SwaggerConfig {
                 .securityReferences(defaultAuth())
                 .forPaths(PathSelectors.regex("/anyPath.*"))
                 .build();
-    }
-
-    List<SecurityReference> defaultAuth() {
+    } List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return newArrayList(
-                new SecurityReference("mykey", authorizationScopes));
-    }
+                new SecurityReference("JWT", authorizationScopes));
+    }*/
 
     @Bean
     SecurityConfiguration security() {

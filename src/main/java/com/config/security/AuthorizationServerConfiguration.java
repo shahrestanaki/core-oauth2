@@ -1,8 +1,7 @@
 package com.config.security;
 
 
-import com.config.props.SecurityProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +16,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
@@ -38,7 +37,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private JwtAccessTokenConverter jwtAccessTokenConverter;
     private TokenStore tokenStore;
 
-    public AuthorizationServerConfiguration(final DataSource dataSource, final PasswordEncoder passwordEncoder,
+    public AuthorizationServerConfiguration(@Qualifier("dataSource") DataSource dataSource, final PasswordEncoder passwordEncoder,
                                             final AuthenticationManager authenticationManager, final SecurityProperties securityProperties,
                                             final UserDetailsService userDetailsService) {
         this.dataSource = dataSource;
@@ -48,13 +47,19 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         this.userDetailsService = userDetailsService;
     }
 
-    @Bean
+    /*@Bean
     public TokenStore tokenStore() {
         if (tokenStore == null) {
             tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
         }
         return tokenStore;
+    }*/
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(this.dataSource);
     }
+
 
     @Bean
     public DefaultTokenServices tokenServices(final TokenStore tokenStore,

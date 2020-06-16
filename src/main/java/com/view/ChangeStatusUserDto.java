@@ -1,17 +1,14 @@
 package com.view;
 
-import com.enump.RoleEnum;
 import com.tools.UserName;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-public class SingUpDto {
+public class ChangeStatusUserDto {
     @UserName
     @Length(min = 5, max = 50)
     private String userName;
-
-    @Length(min = 5, max = 250)
-    private String password;
-
+    private boolean active;
+    private boolean lock;
 }
