@@ -1,5 +1,6 @@
 package com.web;
 
+import com.model.UserInfo;
 import com.service.UserInfoService;
 import com.tools.GeneralTools;
 import com.view.*;

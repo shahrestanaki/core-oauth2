@@ -32,6 +32,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 "/swagger-resources/configuration/security", "/css/**", "/js/**", "/images/jcaptcha",
                 "/templates/doc/**",
                 "/oauth/token",
+                "/test/**",
                 //"/users/sign-up",
                 "/users/info").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
