@@ -174,4 +174,9 @@ public class UserInfoService {
         SimplePageResponse<UserView> result = new SimplePageResponse<>(listView, listNews.getCount());
         return result;
     }
+
+    public UserGeneralResponse logout() {
+        tokenService.logOut(TokenRead.getUserName(), TokenRead.getClientId());
+        return new UserGeneralResponse(HttpStatus.OK);
+    }
 }

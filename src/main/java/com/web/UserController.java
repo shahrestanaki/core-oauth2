@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -72,7 +71,14 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_MANAGE')")
     @ApiOperation(value = "ROLE:MANAGE-This method return list of users.")
     @PostMapping("/list")
-    public SimplePageResponse<UserView>  list(@Valid @RequestBody UserSearchView search) {
+    public SimplePageResponse<UserView> list(@Valid @RequestBody UserSearchView search) {
         return userInfoSrv.list(GeneralTools.convertToCriteriaList(search, ""));
+    }
+
+
+    @ApiOperation(value = "This method for logout any users.")
+    @PostMapping("/logout")
+    public UserGeneralResponse logout() {
+        return userInfoSrv.logout();
     }
 }
