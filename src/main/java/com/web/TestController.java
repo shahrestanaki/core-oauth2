@@ -20,18 +20,21 @@ public class TestController {
 
     @GetMapping("/getuser")
     public UserInfo getuser() {
-        return new UserInfo();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(123L);
+        return userInfo;
+
     }
 
     @PostMapping("/postuser")
     public UserInfo postuser(@Valid @RequestBody SingUpDto singUp) {
-        if(singUp.getUserName().equals("test")) {
-            return new UserInfo();
-        }else{
+        if (singUp.getUserName().equals("usertest")) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserName("test2");
+            return userInfo;
+        } else {
             throw new AppException("user.not.found");
         }
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.web;
 
+import com.exception.AppException;
 import com.model.UserInfo;
 import com.service.UserInfoService;
 import com.tools.GeneralTools;
@@ -21,6 +22,18 @@ public class UserController {
     public String information() {
         return " this information system";
     }
+
+    @PostMapping("/postuser")
+    public UserInfo postuser(@Valid @RequestBody SingUpDto singUp) {
+        if (singUp.getUserName().equals("usertest")) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserName("USERlOGIN");
+            return userInfo;
+        } else {
+            throw new AppException("user.not.found");
+        }
+    }
+
 
     @Autowired
     private UserInfoService userInfoSrv;
