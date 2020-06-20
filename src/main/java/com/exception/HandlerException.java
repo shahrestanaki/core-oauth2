@@ -23,30 +23,29 @@ public class HandlerException extends ResponseEntityExceptionHandler {
     MessageSource messageSource;
 
 
-
-    @ExceptionHandler(Exception.class)
+ /*   @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         Map<String, String> params = new HashMap<>();
-        params.put("code", ErrorEnum.General.toString());
-        params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
+        params.put("core_code", ErrorEnum.General.toString());
+        params.put("timestamp", new Date().toString());
         params.put("message", ex.getLocalizedMessage());
         return new ResponseEntity(params, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 
     @ExceptionHandler(AppException.class)
-    public final ResponseEntity<Object> handleAppException(Exception ex, WebRequest request) {
+    public final ResponseEntity<Object> handleAppException(AppException ex, WebRequest request) {
         Map<String, String> params = new HashMap<>();
-        params.put("code", ErrorEnum.ValidBusiness.toString());
-        params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
-        params.put("message", ex.getLocalizedMessage());
-        return new ResponseEntity(params, HttpStatus.BAD_REQUEST);
+        params.put("core_code", ErrorEnum.ValidBusiness.toString());
+        params.put("timestamp", new Date().toString());
+        params.put("message", ex.getMessage());
+        return new ResponseEntity(params, ex.getHttpStatus());
     }
 
     // error handle for @Valid
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> params = new HashMap<>();
-        params.put("code", ErrorEnum.ValidArg.toString());
+        params.put("core_code", ErrorEnum.ValidArg.toString());
         params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             params.put("message", error.getDefaultMessage());

@@ -1,10 +1,14 @@
 package com.tools;
 
+import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+@Component
 public class GetResourceBundle {
-    public static ResourceBundle getApplication = ResourceBundle.getBundle("application");
-    public static ResourceBundle getConfig = ResourceBundle.getBundle("config");
-    public static ResourceBundle getMessage_fa = ResourceBundle.getBundle("messages_fa");
-    public static final ResourceBundle getFields = ResourceBundle.getBundle("fields");
+    public static ResourceBundle getApplication = ResourceBundle.getBundle("application",new Locale("en_us"));
+    public static ResourceBundle getConfig = ResourceBundle.getBundle("config",new Locale("en_us"));
+    public static ResourceBundle getMessage_fa = ResourceBundle.getBundle("messages_fa",new Locale("fa"));
+    public static ResourceBundle getMessage = ResourceBundle.getBundle("messages",new Locale("en_us"));
 }
