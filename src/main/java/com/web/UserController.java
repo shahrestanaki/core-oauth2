@@ -1,7 +1,5 @@
 package com.web;
 
-import com.exception.AppException;
-import com.model.UserInfo;
 import com.service.UserInfoService;
 import com.tools.GeneralTools;
 import com.view.*;
@@ -9,7 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
@@ -18,22 +19,6 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @Api(value = "users")
 public class UserController {
-    @GetMapping("/info")
-    public String information() {
-        return " this information system";
-    }
-
-    @PostMapping("/postuser")
-    public UserInfo postuser(@Valid @RequestBody SingUpDto singUp) {
-        if (singUp.getUserName().equals("usertest")) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserName("USERlOGIN");
-            return userInfo;
-        } else {
-            throw new AppException("user.not.found");
-        }
-    }
-
 
     @Autowired
     private UserInfoService userInfoSrv;
