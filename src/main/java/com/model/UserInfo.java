@@ -24,14 +24,14 @@ public class UserInfo implements Serializable {
             @org.hibernate.annotations.Parameter(name = "initial_value", value = "20"),
             @org.hibernate.annotations.Parameter(name = "allocationSize", value = "1"),
     })
-    @GeneratedValue(generator = "users_sequence", strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "users_sequence", strategy = GenerationType.SEQUENCE)
     @Column(name = "id", length = 25, nullable = false)
     private Long id;
 
     @Column(name = "username", length = 50, nullable = false)
     private String userName;
 
-    @Column(name = "password",length = 255, nullable = false)
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
@@ -55,16 +55,17 @@ public class UserInfo implements Serializable {
     @Column(name = "change_Date")
     private Date changeDate;
 
-    @Column(name = "role", length = 50,nullable = false)
+    @Column(name = "role", length = 50, nullable = false)
     private String role;
 
-    @Column(name = "manager", length = 50,nullable = false)
+    @Column(name = "manager", length = 50, nullable = false)
     private String manager;
 
-    public UserInfo(){
+    public UserInfo() {
 
     }
-    public UserInfo(String userName,String password,String role,String manager){
+
+    public UserInfo(String userName, String password, String role, String manager) {
         this.userName = userName;
         this.password = password;
         this.role = role;
@@ -72,6 +73,7 @@ public class UserInfo implements Serializable {
         this.lockStatus = false;
         this.createDate = new Date();
         this.manager = manager;
+        this.wrongPass = 0;
     }
 
 }
