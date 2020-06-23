@@ -25,7 +25,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_MANAGE')")
     @ApiOperation(value = "ROLE : MANAGE")
-    @PostMapping("/sign-up")
+    @PostMapping("/sing-up")
     public UserGeneralResponse singUp(@Valid @RequestBody SingUpDto singUp) {
         return userInfoSrv.singup(singUp);
     }

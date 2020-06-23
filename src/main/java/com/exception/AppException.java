@@ -22,7 +22,7 @@ public class AppException extends RuntimeException {
     public String translate(String source) {
         try {
             return GetResourceBundle.getMessage.getString(source);
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError | Exception e) {
             return source;
         }
 

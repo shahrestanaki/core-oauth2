@@ -68,7 +68,7 @@ public class SwaggerConfig {
                                 )
                                 .build())
                 )
-                .enableUrlTemplating(true)
+                .enableUrlTemplating(false)
                 /*.globalOperationParameters(
                         newArrayList(new ParameterBuilder()
                                 .name("someGlobalParameter")
