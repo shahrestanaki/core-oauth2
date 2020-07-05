@@ -23,14 +23,14 @@ public class HandlerException extends ResponseEntityExceptionHandler {
     MessageSource messageSource;
 
 
- /*   @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         Map<String, String> params = new HashMap<>();
         params.put("core_code", ErrorEnum.General.toString());
         params.put("timestamp", new Date().toString());
-        params.put("message", ex.getLocalizedMessage());
+        params.put("message", "general.error");
         return new ResponseEntity(params, HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+    }
 
     @ExceptionHandler(AppException.class)
     public final ResponseEntity<Object> handleAppException(AppException ex, WebRequest request) {

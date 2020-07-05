@@ -18,10 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserInfoService {
@@ -113,6 +110,7 @@ public class UserInfoService {
         }
 
         user.setPassword(new BCryptPasswordEncoder().encode(changePassword.getNewPassword()));
+        user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), false));
         this.update(user, "changePassword", "user");
 
         tokenService.logOut(user.getUserName(), TokenRead.getClientId());
@@ -130,9 +128,23 @@ public class UserInfoService {
         }
         String newPassword = GeneralTools.createRandom("password", 7);
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), true));
         this.update(user, "resetPassword", by);
         tokenService.logOut(user.getUserName(), TokenRead.getClientId());
         return newPassword;
+    }
+
+    private String changeRole(String currentRole, String role, boolean add) {
+        Set<String> cr = new HashSet<>(Arrays.asList(currentRole.split(",")));
+        cr.forEach(item -> {
+            if (item.equals(role)) {
+                cr.remove(item);
+            }
+        });
+        if (add) {
+            cr.add(role);
+        }
+        return String.join(",", cr);
     }
 
     public UserGeneralResponse changeStatusUser(ChangeStatusUserDto statusUser) {

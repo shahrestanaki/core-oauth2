@@ -9,6 +9,5 @@ import java.util.ResourceBundle;
 public class GetResourceBundle {
     public static ResourceBundle getApplication = ResourceBundle.getBundle("application",new Locale("en_us"));
     public static ResourceBundle getConfig = ResourceBundle.getBundle("config",new Locale("en_us"));
-    public static ResourceBundle getMessage_fa = ResourceBundle.getBundle("messages_fa",new Locale("fa"));
     public static ResourceBundle getMessage = ResourceBundle.getBundle("messages",new Locale("en_us"));
 }
