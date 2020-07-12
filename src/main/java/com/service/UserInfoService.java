@@ -126,7 +126,7 @@ public class UserInfoService {
         } else if (user.getLockStatus()) {
             throw new AppException("user.islock");
         }
-        String newPassword = GeneralTools.createRandom("password", 7);
+        String newPassword = GeneralTools.createRandom("number", 7);
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), true));
         this.update(user, "resetPassword", by);
