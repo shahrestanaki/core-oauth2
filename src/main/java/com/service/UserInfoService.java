@@ -135,16 +135,14 @@ public class UserInfoService {
     }
 
     private String changeRole(String currentRole, String role, boolean add) {
-        Set<String> cr = new HashSet<>(Arrays.asList(currentRole.split(",")));
-        cr.forEach(item -> {
-            if (item.equals(role)) {
-                cr.remove(item);
-            }
-        });
+        List<String> roleList = new ArrayList<>();
+        roleList.addAll(Arrays.asList(currentRole.split(",")));
+
+        roleList.removeIf(o -> o.equals(role));
         if (add) {
-            cr.add(role);
+            roleList.add(role);
         }
-        return String.join(",", cr);
+        return String.join(",", roleList);
     }
 
     public UserGeneralResponse changeStatusUser(ChangeStatusUserDto statusUser) {
