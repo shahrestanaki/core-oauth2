@@ -1,6 +1,5 @@
 package com.view;
 
-import com.enump.RoleEnum;
 import com.tools.UserName;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

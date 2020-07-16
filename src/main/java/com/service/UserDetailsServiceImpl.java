@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -20,7 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserInfo userInfo = userInfoDAO.getUserByToken(userName);
-        GrantedAuthority authority = new SimpleGrantedAuthority(userInfo.getRole());
-        return new User(userInfo.getUserName(), userInfo.getPassword(), Arrays.asList(authority));
+        Set<GrantedAuthority> authority = new HashSet<>();
+        List<String> roles = Arrays.asList(userInfo.getRole().split(","));
+        roles.forEach(item ->
+                authority.add(new SimpleGrantedAuthority(item))
+        );
+        return new User(userInfo.getUserName(), userInfo.getPassword(), authority);
     }
 }

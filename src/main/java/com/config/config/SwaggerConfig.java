@@ -68,7 +68,7 @@ public class SwaggerConfig {
                                 )
                                 .build())
                 )
-                .enableUrlTemplating(true)
+                .enableUrlTemplating(false)
                 /*.globalOperationParameters(
                         newArrayList(new ParameterBuilder()
                                 .name("someGlobalParameter")
@@ -106,10 +106,10 @@ public class SwaggerConfig {
     @Bean
     SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder()
-                .clientId("test-app-client-id")
-                .clientSecret("test-app-client-secret")
-                .realm("test-app-realm")
-                .appName("test-app")
+                .clientId("TestController-app-client-id")
+                .clientSecret("TestController-app-client-secret")
+                .realm("TestController-app-realm")
+                .appName("TestController-app")
                 .scopeSeparator(",")
                 .additionalQueryStringParams(null)
                 .useBasicAuthenticationWithAccessCodeGrant(false)

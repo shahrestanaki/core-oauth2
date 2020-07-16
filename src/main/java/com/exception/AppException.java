@@ -1,12 +1,9 @@
 package com.exception;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import com.tools.GetResourceBundle;
 import org.springframework.http.HttpStatus;
 
 public class AppException extends RuntimeException {
-    @Autowired
-    private Environment env;
 
     private static final long serialVersionUID = -7806029002430564887L;
     private String message;
@@ -14,6 +11,7 @@ public class AppException extends RuntimeException {
 
     public AppException(String message) {
         this.message = translate(message);
+        this.httpStatus = HttpStatus.BAD_REQUEST;
     }
 
     public AppException(String message, HttpStatus httpStatus) {
@@ -23,8 +21,8 @@ public class AppException extends RuntimeException {
 
     public String translate(String source) {
         try {
-            return env.getProperty(source);
-        } catch (Exception e) {
+            return GetResourceBundle.getMessage.getString(source);
+        } catch (NoClassDefFoundError | Exception e) {
             return source;
         }
 

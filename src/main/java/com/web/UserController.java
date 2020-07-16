@@ -6,28 +6,30 @@ import com.view.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/users")
 @Api(value = "users")
 public class UserController {
-    @GetMapping("/info")
-    public String information() {
-        return " this information system";
-    }
 
     @Autowired
     private UserInfoService userInfoSrv;
 
+    @GetMapping("/info")
+    public ResponseEntity<Principal> get(final Principal principal) {
+        return ResponseEntity.ok(principal);
+    }
+
     @PreAuthorize("hasRole('ROLE_MANAGE')")
     @ApiOperation(value = "ROLE : MANAGE")
-    @PostMapping("/sign-up")
+    @PostMapping("/sing-up")
     public UserGeneralResponse singUp(@Valid @RequestBody SingUpDto singUp) {
         return userInfoSrv.singup(singUp);
     }
@@ -72,7 +74,14 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_MANAGE')")
     @ApiOperation(value = "ROLE:MANAGE-This method return list of users.")
     @PostMapping("/list")
-    public SimplePageResponse<UserView>  list(@Valid @RequestBody UserSearchView search) {
+    public SimplePageResponse<UserView> list(@Valid @RequestBody UserSearchView search) {
         return userInfoSrv.list(GeneralTools.convertToCriteriaList(search, ""));
+    }
+
+
+    @ApiOperation(value = "This method for logout any users.")
+    @PostMapping("/logout")
+    public UserGeneralResponse logout() {
+        return userInfoSrv.logout();
     }
 }

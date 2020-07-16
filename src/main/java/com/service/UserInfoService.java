@@ -18,10 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserInfoService {
@@ -113,6 +110,7 @@ public class UserInfoService {
         }
 
         user.setPassword(new BCryptPasswordEncoder().encode(changePassword.getNewPassword()));
+        user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), false));
         this.update(user, "changePassword", "user");
 
         tokenService.logOut(user.getUserName(), TokenRead.getClientId());
@@ -128,11 +126,23 @@ public class UserInfoService {
         } else if (user.getLockStatus()) {
             throw new AppException("user.islock");
         }
-        String newPassword = GeneralTools.createRandom("password", 7);
+        String newPassword = GeneralTools.createRandom("number", 7);
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), true));
         this.update(user, "resetPassword", by);
         tokenService.logOut(user.getUserName(), TokenRead.getClientId());
         return newPassword;
+    }
+
+    private String changeRole(String currentRole, String role, boolean add) {
+        List<String> roleList = new ArrayList<>();
+        roleList.addAll(Arrays.asList(currentRole.split(",")));
+
+        roleList.removeIf(o -> o.equals(role));
+        if (add) {
+            roleList.add(role);
+        }
+        return String.join(",", roleList);
     }
 
     public UserGeneralResponse changeStatusUser(ChangeStatusUserDto statusUser) {
@@ -173,5 +183,10 @@ public class UserInfoService {
         List<UserView> listView = UserMapper.INSTANCE.listMap(listNews.getContent());
         SimplePageResponse<UserView> result = new SimplePageResponse<>(listView, listNews.getCount());
         return result;
+    }
+
+    public UserGeneralResponse logout() {
+        tokenService.logOut(TokenRead.getUserName(), TokenRead.getClientId());
+        return new UserGeneralResponse(HttpStatus.OK);
     }
 }
