@@ -20,9 +20,8 @@ public class AuthenticationEventListener extends DaoAuthenticationProvider {
             super.additionalAuthenticationChecks(userDetails, authentication);
             userInfoService.submitUserLogin(userDetails.getUsername());
         } catch (BadCredentialsException ex) {
-
             String presentedPassword = authentication.getCredentials().toString();
-            if (!getPasswordEncoder().matches(userDetails.getPassword(), presentedPassword)) {
+            if (!getPasswordEncoder().matches(presentedPassword, userDetails.getPassword())) {
                 userInfoService.submitWrongPassword(userDetails.getUsername());
             }
             throw new BadCredentialsException(this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
