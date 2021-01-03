@@ -148,7 +148,7 @@ public class UserInfoService {
     public UserGeneralResponse changeStatusUser(ChangeStatusUserDto statusUser) {
         UserGeneralResponse response = new UserGeneralResponse(HttpStatus.OK);
         UserInfo user = userRepo.findByUserNameAndManager(statusUser.getUserName(), TokenRead.getUserName());
-        if (user.getActive() == statusUser.isActive() || user.getLockStatus() == statusUser.isLock()) {
+        if (user.getActive() == statusUser.isActive() && user.getLockStatus() == statusUser.isLock()) {
             return response;
         }
         user.setActive(statusUser.isActive());
