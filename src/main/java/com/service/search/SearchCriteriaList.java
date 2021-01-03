@@ -19,7 +19,7 @@ public class SearchCriteriaList {
     @Max(40L)
     @JsonProperty("pageSize")
     private int size = 10;
-    private String sort ;
+    private String sort  = "id";
 
     public SearchCriteriaList() {
 
