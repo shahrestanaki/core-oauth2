@@ -36,9 +36,9 @@ public class UserController {
 
 
     @ApiIgnore
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MAIN_ADMIN')")
     @PostMapping("/sign-up-management")
-    public UserGeneralResponse singUpManagement(@Valid @RequestBody SingUpDto singUp) {
+    public UserGeneralResponse singUpManagement(@Valid @RequestBody SingUpManageDto singUp) {
         return userInfoSrv.singUpManagement(singUp);
     }
 

@@ -1,10 +1,6 @@
 package com.enump;
 
-public enum RoleEnum {
-
-    ROLE_MANAGE("ROLE_MANAGE"),
-    ROLE_MAIN_ADMIN("ROLE_MAIN_ADMIN"),
-    ROLE_CHANGE_PASSWORD("ROLE_CHANGE_PASSWORD"),
+public enum RoleSingUpEnum {
 
     ROLE_ADMIN("ROLE_ADMIN"),
     ROLE_USER("ROLE_USER"),
@@ -21,7 +17,7 @@ public enum RoleEnum {
 
     private String name;
 
-    RoleEnum(String name) {
+    RoleSingUpEnum(String name) {
         this.name = name;
     }
 }

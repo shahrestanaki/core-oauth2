@@ -32,7 +32,7 @@ public class UserInfoService {
     public UserGeneralResponse singup(SingUpDto singUp) {
         String manager = TokenRead.getUserName();
         UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
-                RoleEnum.ROLE_USER.name(), manager);
+                singUp.getRoleStr(), manager);
         userRepo.save(userInfo);
         return new UserGeneralResponse(HttpStatus.OK);
     }
@@ -167,9 +167,9 @@ public class UserInfoService {
 
 
     //TODO
-    public UserGeneralResponse singUpManagement(@Valid SingUpDto singUp) {
+    public UserGeneralResponse singUpManagement(@Valid SingUpManageDto singUp) {
         UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
-                RoleEnum.ROLE_MANAGE.name(), "Admin");
+                singUp.getRole().name(), "Admin");
         userRepo.save(userInfo);
         return new UserGeneralResponse(HttpStatus.OK);
     }

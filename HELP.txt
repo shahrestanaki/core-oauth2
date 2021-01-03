@@ -2,16 +2,17 @@ https://blog.marcosbarbero.com/centralized-authorization-jwt-spring-boot2/
 https://www.devglan.com/online-tools/bcrypt-hash-generator
 
 
-CREATE TABLE OAUTH_ACCESS_TOKEN
+create table oauth_access_token
 (
-  TOKEN_ID           VARCHAR(255 ),
-  TOKEN              BLOB,
-  AUTHENTICATION_ID  VARCHAR(255 ),
-  USER_NAME          VARCHAR(255 ),
-  CLIENT_ID          VARCHAR(255 ),
-  AUTHENTICATION     BLOB,
-  REFRESH_TOKEN      VARCHAR(255 )
+  token_id           varchar(255 ),
+  token              blob,
+  authentication_id  varchar(255 ),
+  user_name          varchar(255 ),
+  client_id          varchar(255 ),
+  authentication     blob,
+  refresh_token      varchar(255 )
 );
+
 CREATE TABLE oauth_client_details
 (
   CLIENT_ID                VARCHAR(255 ),
@@ -40,6 +41,8 @@ CREATE TABLE OAUTH_USERNAMEWRONG
 )
 
 -------------------
+INSERT INTO oauth_client_details (`CLIENT_ID`,`RESOURCE_IDS`,`CLIENT_SECRET`,`SCOPE`,`AUTHORIZED_GRANT_TYPES`,`WEB_SERVER_REDIRECT_URI`,`AUTHORITIES`,`ACCESS_TOKEN_VALIDITY`,`REFRESH_TOKEN_VALIDITY`,`ADDITIONAL_INFORMATION`,`AUTOAPPROVE`) VALUES ('clientId1','1','$2a$04$KV7rM5DCxSKM8nQArQDT0ubKvYh259WWOmqxaaaze6z7jIK/S7QrO','read,write','password,refresh_token,client_credentials','authorization_code','ROLE_CLIENT',36000,36000,NULL,'true');
+
 -------------------
 admin:
 username : admin
@@ -73,7 +76,7 @@ hashpassword : $2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa
 
 
 ----------------------------------------
-INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 1, b'1', NULL, '2020-06-12 14:14:16', NULL, b'0', '$$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_ADMIN', 'admin', NULL);
+INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 1, b'1', NULL, '2020-06-12 14:14:16', NULL, b'0', '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_ADMIN', 'admin', NULL);
 INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 10, b'1', '2020-06-14 16:38:33', '2020-06-14 14:00:01', NULL, b'0', '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_MANAGE', 'manager1', 1);
 INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 11, b'1', NULL, '2020-06-14 14:13:38', NULL, b'0', '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_MANAGE', 'manager2', NULL);
 
@@ -82,3 +85,4 @@ INSERT INTO `test`.`client`(`id`, `clientid`, `password`) VALUES (1, 'clientId1'
 INSERT INTO `test`.`client`(`id`, `clientid`, `password`) VALUES (2, 'clientId2', '$2y$2a$04$grQXtQZu/A4Z.XMNYbS/.uvtlju19lzQ9ox2n.rJe1lfGjZBfIl6C');
 
 
+INSERT INTO `` (`CLIENT_ID`,`CLIENT_SECRET`,`SCOPE`,`AUTHORIZED_GRANT_TYPES`,`WEB_SERVER_REDIRECT_URI`,`AUTHORITIES`,`ACCESS_TOKEN_VALIDITY`,`REFRESH_TOKEN_VALIDITY`,`ADDITIONAL_INFORMATION`,`AUTOAPPROVE`) VALUES ('clientId1','$2a$04$KV7rM5DCxSKM8nQArQDT0ubKvYh259WWOmqxaaaze6z7jIK/S7QrO','read,write','password,refresh_token,client_credentials','authorization_code','ROLE_CLIENT',36000,36000,NULL,'true');
