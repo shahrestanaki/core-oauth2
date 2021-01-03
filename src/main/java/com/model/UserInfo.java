@@ -55,7 +55,7 @@ public class UserInfo implements Serializable {
     @Column(name = "change_Date")
     private Date changeDate;
 
-    @Column(name = "role", length = 50, nullable = false)
+    @Column(name = "role", length = 255, nullable = false)
     private String role;
 
     @Column(name = "manager", length = 50, nullable = false)
