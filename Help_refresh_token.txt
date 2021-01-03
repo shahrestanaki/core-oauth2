@@ -1,0 +1,10 @@
+login and get token:
+http://localhost:9090/core/oauth/token
+(grant_type-username-password-clientid-secret)
+
+use access_token for get resource.
+
+don't save password, store refresh_token and use it:
+http://localhost:9090/core/oauth/token?grant_type=refresh_token&refresh_token= ......
+(clientid-secret)
+in section store refresh token and send for repeate login automatic and get access_token and refresh_token and save new refresh_token
