@@ -61,6 +61,14 @@ public class UserInfo implements Serializable {
     @Column(name = "manager", length = 50, nullable = false)
     private String manager;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "change_Pass_Date")
+    private Date changePassDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_login_Date")
+    private Date lastLoginDate;
+
     public UserInfo() {
 
     }
@@ -74,6 +82,7 @@ public class UserInfo implements Serializable {
         this.createDate = new Date();
         this.manager = manager;
         this.wrongPass = 0;
+        this.changePassDate = this.createDate;
     }
 
 }

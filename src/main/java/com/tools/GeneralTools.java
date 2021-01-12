@@ -4,10 +4,16 @@ import com.service.search.SearchCriteria;
 import com.service.search.SearchCriteriaList;
 import org.springframework.util.StringUtils;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class GeneralTools {
+    public static final String TOKEN = "F9w8dfg9szf5P";
+
     public static String createRandom(String type, int targetStringLength) {
         int leftLimit = 0;
         int rightLimit = 0;
@@ -78,5 +84,26 @@ public class GeneralTools {
         }
         search.setSearch(filter);
         return search;
+    }
+
+    private static String encryptNew(String value, String key) throws Exception {
+        IvParameterSpec iv = new IvParameterSpec(TOKEN.getBytes(StandardCharsets.UTF_8), 0, 16);
+        SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), 0, 16, "AES");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+        byte[] encrypted = cipher.doFinal(value.getBytes());
+        System.out.println("encrypted = " + Base64.getEncoder().encodeToString(encrypted));
+        return Base64.getEncoder().encodeToString(encrypted);
+    }
+
+    public static String decryptNew(String encrypted, String key) throws Exception {
+        //IvParameterSpec iv = new IvParameterSpec("TOKEN".getBytes(StandardCharsets.UTF_8), 0, 16);
+        IvParameterSpec iv = new IvParameterSpec(TOKEN.getBytes(StandardCharsets.UTF_8), 0, 16);
+        SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), 0, 16, "AES");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+        cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+        byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
+        System.out.println("new String(original) = " + new String(original));
+        return new String(original);
     }
 }

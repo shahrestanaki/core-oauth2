@@ -8,8 +8,9 @@ import com.repository.UserDetailsRepository;
 import com.service.mapper.UserMapper;
 import com.service.search.SearchCriteria;
 import com.service.search.SearchCriteriaList;
-import com.tools.CorrectDate;
+import com.tools.GeneralDateTools;
 import com.tools.GeneralTools;
+import com.tools.GetResourceBundle;
 import com.tools.TokenRead;
 import com.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,23 @@ import java.util.*;
 
 @Service
 public class UserInfoService {
+/*    @Qualifier("defaultTokenServices")
+    ConsumerTokenServices tokenServices2;*/
+/*
+    @Qualifier("tokenStore")
+    TokenStore tokenStore2;*/
+
+    private final int MAX_LOCK_TIME = Integer.parseInt(GetResourceBundle.getConfig.getString("max.user.lock.time"));
+    private final int MAX_PASS_WRONG = Integer.parseInt(GetResourceBundle.getConfig.getString("max.user.wrong.pass"));
 
     @Autowired
     private UserDetailsRepository userRepo;
 
     @Autowired
-    private TokenService tokenService;
+    private TokenService tokenSrv;
+
+/*    @Autowired
+    private TokenStore tokenStore;*/
 
     public UserGeneralResponse singup(SingUpDto singUp) {
         String manager = TokenRead.getUserName();
@@ -46,7 +58,7 @@ public class UserInfoService {
         if (user == null) {
             throw new AppException("User not Exist");
         } else if (user.getLockStatus()) {
-            Date unlockDate = CorrectDate.addToDate(user.getLockDate(), 10, Calendar.MINUTE);
+            Date unlockDate = GeneralDateTools.addToDate(user.getLockDate(), MAX_LOCK_TIME, Calendar.MINUTE);
             if (unlockDate.after(new Date())) {
                 throw new AppException("User is Locked as " + user.getLockDate());
             }
@@ -66,9 +78,9 @@ public class UserInfoService {
         UserInfo userInfo = getUserInfoByUserName(userName);
         int count = userInfo.getWrongPass() == null ? 0 : userInfo.getWrongPass();
 
-        if (count >= 3) {// max wrong
+        if (count >= MAX_PASS_WRONG) {// max wrong
             if (userInfo.getLockStatus()) {// update lock date
-                Date unlockDate = CorrectDate.addToDate(userInfo.getLockDate(), 10, Calendar.MINUTE);
+                Date unlockDate = GeneralDateTools.addToDate(userInfo.getLockDate(), MAX_LOCK_TIME, Calendar.MINUTE);
                 if (unlockDate.before(new Date())) {
                     userInfo.setLockDate(new Date());
                 }
@@ -76,12 +88,11 @@ public class UserInfoService {
                 userInfo.setLockDate(new Date());
                 userInfo.setLockStatus(true);
             }
-            this.update(userInfo, "submitWrongPassword", "system");
         } else {
             count++;
             userInfo.setWrongPass(count);
-            this.update(userInfo, "submitWrongPassword", "system");
         }
+        this.update(userInfo, "submitWrongPassword", "system");
     }
 
     public void submitUserLogin(String userName) {
@@ -113,7 +124,8 @@ public class UserInfoService {
         user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), false));
         this.update(user, "changePassword", "user");
 
-        tokenService.logOut(user.getUserName(), TokenRead.getClientId());
+
+        tokenSrv.logOut(user.getUserName(), TokenRead.getClientId());
         return new UserGeneralResponse(HttpStatus.OK);
     }
 
@@ -129,8 +141,9 @@ public class UserInfoService {
         String newPassword = GeneralTools.createRandom("number", 7);
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         user.setRole(changeRole(user.getRole(), RoleEnum.ROLE_CHANGE_PASSWORD.name(), true));
+        user.setChangePassDate(new Date());
         this.update(user, "resetPassword", by);
-        tokenService.logOut(user.getUserName(), TokenRead.getClientId());
+        tokenSrv.logOut(user.getUserName(), TokenRead.getClientId());
         return newPassword;
     }
 
@@ -161,7 +174,7 @@ public class UserInfoService {
         }
 
         this.update(user, "changeStatusUser", "management");
-        tokenService.logOut(user.getUserName(), TokenRead.getClientId());
+        tokenSrv.logOut(user.getUserName(), TokenRead.getClientId());
         return response;
     }
 
@@ -186,7 +199,17 @@ public class UserInfoService {
     }
 
     public UserGeneralResponse logout() {
-        tokenService.logOut(TokenRead.getUserName(), TokenRead.getClientId());
+        tokenSrv.logOut(TokenRead.getUserName(), TokenRead.getClientId());
         return new UserGeneralResponse(HttpStatus.OK);
     }
+
+/*    public void revokeToken(String tokenId) {
+        tokenServices.revokeToken(tokenId);
+    }*/
+
+/*    public void revokeRefreshToken(String tokenId) {
+        if (tokenStore instanceof JdbcTokenStore) {
+            ((JdbcTokenStore) tokenStore2).removeRefreshToken(tokenId);
+        }
+    }*/
 }

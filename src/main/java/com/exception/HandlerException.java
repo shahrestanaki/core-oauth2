@@ -1,7 +1,7 @@
 package com.exception;
 
 import com.enump.ErrorEnum;
-import com.tools.CorrectDate;
+import com.tools.GeneralDateTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
@@ -49,7 +49,7 @@ public class HandlerException extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> params = new HashMap<>();
         params.put("core_code", ErrorEnum.ValidArg.toString());
-        params.put("timestamp", CorrectDate.dateTimeZone(new Date()));
+        params.put("timestamp", GeneralDateTools.dateTimeZone(new Date()));
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             params.put("message", error.getDefaultMessage());
             params.put("field", error.getField());

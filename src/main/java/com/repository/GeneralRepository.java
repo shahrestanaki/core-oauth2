@@ -1,13 +1,10 @@
 package com.repository;
 
-import com.service.search.SearchSpecification;
 import com.service.search.SearchCriteria;
 import com.service.search.SearchCriteriaList;
+import com.service.search.SearchSpecification;
 import com.view.SimplePageResponse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -18,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @NoRepositoryBean
-public interface GeneralRepository<T, PK extends Serializable> extends JpaRepository<T, PK>,JpaSpecificationExecutor<T> {
+public interface GeneralRepository<T, PK extends Serializable> extends JpaRepository<T, PK>, JpaSpecificationExecutor<T> {
 
     //Page<T> findAll(Specification<T> var1, Pageable var2);
 
@@ -69,5 +66,11 @@ public interface GeneralRepository<T, PK extends Serializable> extends JpaReposi
             }
         });
         return combinedSpecs[0];
+    }
+
+    default List<T> findAllSample(T search) {
+        Sort.Direction direction;
+        Example<T> example = Example.of(search);
+        return findAll(example);
     }
 }

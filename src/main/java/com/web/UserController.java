@@ -8,9 +8,13 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -18,6 +22,11 @@ import java.security.Principal;
 @RequestMapping("/users")
 @Api(value = "users")
 public class UserController {
+    @Autowired
+    private TokenStore tokenStore;
+
+    @Autowired
+    ConsumerTokenServices tokenServices;
 
     @Autowired
     private UserInfoService userInfoSrv;
@@ -83,5 +92,26 @@ public class UserController {
     @PostMapping("/logout")
     public UserGeneralResponse logout() {
         return userInfoSrv.logout();
+    }
+
+
+    @PreAuthorize("hasAnyRole({'ROLE_MANAGE','ROLE_MAIN_ADMIN'})")
+    @ApiOperation(value = "ROLE:MANAGE and ROLE_MAIN_ADMIN This method del token id")
+    @PostMapping(value = "/tokens/revoke/{tokenId}")
+    @ResponseBody
+    public String revokeToken(@PathVariable String tokenId) {
+        tokenServices.revokeToken(tokenId);
+        return tokenId;
+    }
+
+    @PreAuthorize("hasAnyRole({'ROLE_MANAGE','ROLE_MAIN_ADMIN'})")
+    @ApiOperation(value = "ROLE:MANAGE and ROLE_MAIN_ADMIN This method del refresh token by token id")
+    @PostMapping(value = "/tokens/revokeRefreshToken/{tokenId}")
+    @ResponseBody
+    public String revokeRefreshToken(@PathVariable String tokenId) {
+        if (tokenStore instanceof JdbcTokenStore) {
+            ((JdbcTokenStore) tokenStore).removeRefreshToken(tokenId);
+        }
+        return tokenId;
     }
 }

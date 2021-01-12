@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -35,15 +35,35 @@ public class TokenRead {
         }
     }
 
-    /**management*/
-    public static String getClientId() {
+    /**
+     * management
+     */
+    public static String getClientIdFromBasicAuth() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            return ((OAuth2Authentication) authentication).getOAuth2Request().getClientId();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            return authentication.getName();
         } catch (Exception exp) {
             exp.printStackTrace();
             throw new AppException("token.error.getManagement");
+        }
+    }
+
+    public static String getClientId() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            return authentication.getName();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new AppException("token.error.getManagement");
+        }
+    }
+
+    public static String getToken() {
+        try {
+            return ((OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getTokenValue();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new AppException("token.get.error");
         }
     }
 }
