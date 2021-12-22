@@ -53,7 +53,7 @@ username : manager1
 
 clientId : clientId1
 password_clientId : secret
-hash_password_clientId : $2y$12$5UfgJpahlBFxW7qZygq/4OTOuW9hYqLSQQoUjKolN3ewqDYXEq5nO
+hash_password_clientId : $2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.
 
 hashusername :
 password : 123456
@@ -65,7 +65,7 @@ username : manager2
 
 clientId : clientId2
 password_clientId : secret
-hash_password_clientId : $2a$04$grQXtQZu/A4Z.XMNYbS/.uvtlju19lzQ9ox2n.rJe1lfGjZBfIl6C
+hash_password_clientId : $2a$04$Q7oNw1wtYjXA/fsSN4A.S.RXwEDID3XMj5XlAAMtnUpyUPphTCc.C
 
 hashusername :
 password : 123456
@@ -73,12 +73,5 @@ hashpassword : $2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa
 
 
 ----------------------------------------
-INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 1, b'1', NULL, '2020-06-12 14:14:16', NULL, b'0', '$$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_ADMIN', 'admin', NULL);
-INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 10, b'1', '2020-06-14 16:38:33', '2020-06-14 14:00:01', NULL, b'0', '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_MANAGE', 'manager1', 1);
-INSERT INTO `test`.`users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 11, b'1', NULL, '2020-06-14 14:13:38', NULL, b'0', '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_MANAGE', 'manager2', NULL);
 
-
-INSERT INTO `test`.`client`(`id`, `clientid`, `password`) VALUES (1, 'clientId1', '$2y$12$5UfgJpahlBFxW7qZygq/4OTOuW9hYqLSQQoUjKolN3ewqDYXEq5nO');
-INSERT INTO `test`.`client`(`id`, `clientid`, `password`) VALUES (2, 'clientId2', '$2y$2a$04$grQXtQZu/A4Z.XMNYbS/.uvtlju19lzQ9ox2n.rJe1lfGjZBfIl6C');
-
-
+DaoAuthenticationProvider

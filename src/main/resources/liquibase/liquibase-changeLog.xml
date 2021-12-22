@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet author="m.shahrestanaki (generated)" id="1439225004329-1">
+        <createTable tableName="OAUTH_ACCESS_TOKEN">
+            <column autoIncrement="false" name="TOKEN_ID" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TOKEN" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHENTICATION_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLIENT_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHENTICATION" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REFRESH_TOKEN" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.shahrestanaki (generated)" id="1439225004329-2">
+        <createTable tableName="oauth_client_details">
+            <column autoIncrement="false" name="CLIENT_ID" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RESOURCE_IDS" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CLIENT_SECRET" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SCOPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHORIZED_GRANT_TYPES" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WEB_SERVER_REDIRECT_URI" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="AUTHORITIES" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCESS_TOKEN_VALIDITY" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REFRESH_TOKEN_VALIDITY" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ADDITIONAL_INFORMATION" type="blob">
+                <constraints nullable="true"/>
+            </column>
+            <column name="AUTOAPPROVE" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet  author="m.shahrestanaki (generated)"  id="sql-1">
+        <sql dbms="h2, oracle"
+             endDelimiter="\nGO"
+             splitStatements="true"
+             stripComments="true">
+            INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
+            VALUES ('clientId_admin', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_ADMIN', 300);
+
+            INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
+            VALUES ('clientId1', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
+
+            INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
+            VALUES ('clientId2', '{bcrypt}$2a$04$Q7oNw1wtYjXA/fsSN4A.S.RXwEDID3XMj5XlAAMtnUpyUPphTCc.C', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
+            <comment>add default client</comment>
+        </sql>
+    </changeSet>
+
+    <changeSet author="m.shahrestanaki (generated)" id="1439225004329-3">
+        <createTable tableName="OAUTH_REFRESH_TOKEN">
+            <column autoIncrement="false" name="TOKEN_ID" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TOKEN" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHENTICATION" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.shahrestanaki (generated)" id="1439225004329-4">
+        <createTable tableName="OAUTH_USERNAMEWRONG">
+            <column autoIncrement="false" name="OAUTH_UNW_ID" type="INTEGER">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="OAUTH_UNW_USERNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OAUTH_UNW_IP" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.shahrestanaki (generated)" id="1439225004329-5">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="ID" type="NUMBER">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="MANAGER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CHANGE_DATE" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATE_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCK_DATE" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="LOCK_STATUS" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERNAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WRONG_PASS" type="NUMBER">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet  author="m.shahrestanaki (generated)"  id="sql-2">
+        <sql dbms="h2, oracle"
+             endDelimiter="\nGO"
+             splitStatements="true"
+             stripComments="true">
+            INSERT INTO `users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 1 , 1, NULL, '2020-06-12 14:14:16', NULL, 0, '$2a$04$uWijkPyfHdKk0EklGNBHguBg.OkJJ/xOKIRE7IH8WE/Zaoua8aeF.', 'ROLE_ADMIN', 'admin', NULL);
+            INSERT INTO `users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 10, 1, NULL, '2020-06-14 14:00:01', NULL, 0, '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_MANAGE', 'manager1', NULL);
+            INSERT INTO `users`(`manager`, `id`, `enabled`, `change_date`, `create_date`, `lock_date`, `lock_status`, `password`, `role`, `username`, `wrong_pass`) VALUES ('admin', 11, 1, NULL, '2020-06-14 14:13:38', NULL, 0, '$2a$10$8bSVQ3nxTATOKGMgqHipw.yns/ClfD/S0Tp8ChuHNxQAGFiIVIlXa', 'ROLE_MANAGE', 'manager2', NULL);
+            <comment>add default user</comment>
+        </sql>
+    </changeSet>
+
+    <changeSet author="m.shahrestanaki (generated)" id="1439225004329-6">
+        <createTable tableName="client">
+            <column autoIncrement="true" name="ID" type="NUMBER">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="manager_Name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_Id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet  author="m.shahrestanaki (generated)"  id="sql-3">
+        <sql dbms="h2, oracle"
+             endDelimiter="\nGO"
+             splitStatements="true"
+             stripComments="true">
+            INSERT INTO `client`(`id`, `manager_Name`, `client_Id`) VALUES (1, 'admin', 'clientId_admin');
+            INSERT INTO `client`(`id`, `manager_Name`, `client_Id`) VALUES (2, 'manager1', 'clientId1');
+            INSERT INTO `client`(`id`, `manager_Name`, `client_Id`) VALUES (3, 'manager1', 'clientId2');
+            <comment>add default client</comment>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

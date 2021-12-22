@@ -35,6 +35,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 "/templates/doc/**",
                 "/oauth/token",
                 "/test/**",
+                "/h2-console/**",
                 //"/users/sign-up",
                 "/users/info").permitAll();
         http.authorizeRequests().anyRequest().authenticated();

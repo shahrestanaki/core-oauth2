@@ -86,7 +86,7 @@ public class UserInfoService {
 
     public void submitUserLogin(String userName) {
         UserInfo userInfo = getUserInfoByUserName(userName);
-        if (userInfo.getLockStatus() || userInfo.getWrongPass() > 0) {
+        if (userInfo.getLockStatus() || (userInfo.getWrongPass() != null && userInfo.getWrongPass() > 0)) {
             userInfo.setLockStatus(false);
             userInfo.setLockDate(null);
             userInfo.setWrongPass(0);
