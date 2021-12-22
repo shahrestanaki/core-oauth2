@@ -1,9 +1,11 @@
 package com.repository;
 
-import com.service.search.SearchSpecification;
 import com.service.search.SearchCriteria;
 import com.service.search.SearchCriteriaList;
+import com.service.search.SearchSpecification;
 import com.view.SimplePageResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,31 +19,40 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 
-@NoRepositoryBean
-public interface GeneralRepository<T, PK extends Serializable> extends JpaRepository<T, PK>,JpaSpecificationExecutor<T> {
 
+@NoRepositoryBean
+public interface GeneralRepository<T, PK extends Serializable> extends JpaRepository<T, PK>, JpaSpecificationExecutor<T> {
+    Logger logger = LoggerFactory.getLogger(GeneralRepository.class);
     //Page<T> findAll(Specification<T> var1, Pageable var2);
 
     default SimplePageResponse<T> findAllCriteria(SearchCriteriaList search) {
-        Sort.Direction direction;
-        if (search.getSort().contains("desc")) {
-            direction = Sort.Direction.DESC;
-            search.setSort(search.getSort().replace("desc", ""));
-        } else {
-            direction = Sort.Direction.ASC;
-            search.setSort(search.getSort().replace("asc", ""));
-        }
-        //Pageable pageable = new PageRequest(search.getPage(), search.getSize(), new Sort(direction, search.getSort().trim()));
-        Pageable pageable = PageRequest.of(search.getPage(), search.getSize(), new Sort(direction, search.getSort().trim()));
-        //Pageable pageable = new PageRequest(search.getPage(), search.getSize());
-        SimplePageResponse<T> temp = new SimplePageResponse<>();
-        Specification<T> combinedSpecs = creatFilter(search.getSearch());
+        try {
+            Sort sort = Sort.unsorted();
+            if (search.getSort() != null) {
+                Sort.Direction direction;
+                if (search.getSort().contains("desc")) {
+                    direction = Sort.Direction.DESC;
+                    search.setSort(search.getSort().replace("desc", ""));
+                } else {
+                    direction = Sort.Direction.ASC;
+                    search.setSort(search.getSort().replace("asc", ""));
+                }
+                sort = new Sort(direction, search.getSort().trim());
+            }
+            Pageable pageable = PageRequest.of(search.getPage(), search.getSize(), sort);
+            SimplePageResponse<T> temp = new SimplePageResponse<>();
+            Specification<T> combinedSpecs = creatFilter(search.getSearch());
 
-        Page results = findAll(combinedSpecs, pageable);
-        List<T> educationFieldViews = results.getContent();
-        temp.setContent(educationFieldViews);
-        temp.setCount(results.getTotalElements());
-        return temp;
+            Page results = findAll(combinedSpecs, pageable);
+            List<T> educationFieldViews = results.getContent();
+            temp.setContent(educationFieldViews);
+            temp.setCount(results.getTotalElements());
+            return temp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 
 

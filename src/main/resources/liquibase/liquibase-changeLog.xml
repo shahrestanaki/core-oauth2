@@ -74,13 +74,13 @@
              splitStatements="true"
              stripComments="true">
             INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
-            VALUES ('clientId_admin', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_ADMIN', 300);
+            VALUES ('clientId_admin', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_ADMIN', 30000);
 
             INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
-            VALUES ('clientId1', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
+            VALUES ('clientId1', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 30000);
 
             INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
-            VALUES ('clientId2', '{bcrypt}$2a$04$Q7oNw1wtYjXA/fsSN4A.S.RXwEDID3XMj5XlAAMtnUpyUPphTCc.C', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
+            VALUES ('clientId2', '{bcrypt}$2a$04$Q7oNw1wtYjXA/fsSN4A.S.RXwEDID3XMj5XlAAMtnUpyUPphTCc.C', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 30000);
             <comment>add default client</comment>
         </sql>
     </changeSet>
@@ -161,6 +161,19 @@
             <comment>add default user</comment>
         </sql>
     </changeSet>
+    <changeSet  author="m.shahrestanaki (generated)"  id="sql-user-1">
+        <sql dbms="h2, oracle"
+             endDelimiter="\nGO"
+             splitStatements="true"
+             stripComments="true">
+                CREATE SEQUENCE USERS_SEQUENCE
+                START WITH     10
+                INCREMENT BY   1
+                NOCACHE
+                NOCYCLE;
+            <comment>add default user</comment>
+        </sql>
+    </changeSet>
 
     <changeSet author="m.shahrestanaki (generated)" id="1439225004329-6">
         <createTable tableName="client">
@@ -186,5 +199,17 @@
             <comment>add default client</comment>
         </sql>
     </changeSet>
-
+    <changeSet  author="m.shahrestanaki (generated)"  id="sql-client-1">
+        <sql dbms="h2, oracle"
+             endDelimiter="\nGO"
+             splitStatements="true"
+             stripComments="true">
+            CREATE SEQUENCE CLIENT_SEQUENCE
+            START WITH     10
+            INCREMENT BY   1
+            NOCACHE
+            NOCYCLE;
+            <comment>add default user</comment>
+        </sql>
+    </changeSet>
 </databaseChangeLog>

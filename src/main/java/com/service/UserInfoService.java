@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @Service
-public class UserInfoService {
+public class UserInfoService implements GeneralService<UserInfo, Long> {
 
     @Autowired
     private UserDetailsRepository userRepo;
@@ -31,9 +31,15 @@ public class UserInfoService {
 
     public UserGeneralResponse singup(SingUpDto singUp) {
         String manager = TokenRead.getUserName();
+        UserInfo users = getUserByManager(singUp.getUserName(), manager);
+        if (users != null) {
+            throw new AppException("user exist");
+        }
+
         UserInfo userInfo = new UserInfo(singUp.getUserName(), new BCryptPasswordEncoder().encode(singUp.getPassword()),
                 RoleEnum.ROLE_USER.name(), manager);
         userRepo.save(userInfo);
+        logger.info(" class: %s - manager: %s - create user: %s", this.getClass().getName(), manager, singUp.getUserName());
         return new UserGeneralResponse(HttpStatus.OK);
     }
 
@@ -44,11 +50,13 @@ public class UserInfoService {
     public UserInfo getUserByToken(String userName) {
         UserInfo user = userRepo.findByUserName(userName);
         if (user == null) {
-            throw new AppException("User not Exist");
+            throw new AppException("User.not.Exist");
         } else if (user.getLockStatus()) {
             Date unlockDate = CorrectDate.addToDate(user.getLockDate(), 10, Calendar.MINUTE);
             if (unlockDate.after(new Date())) {
-                throw new AppException("User is Locked as " + user.getLockDate());
+                LinkedHashSet<String> params = new LinkedHashSet<>();
+                params.add(user.getLockDate().toString());
+                throw new AppException("User.is.Locked.as.date", params, null);
             }
         } else if (!user.getActive()) {
             throw new AppException("User Deactivate as " + user.getChangeDate());
@@ -188,5 +196,14 @@ public class UserInfoService {
     public UserGeneralResponse logout() {
         tokenService.logOut(TokenRead.getUserName(), TokenRead.getClientId());
         return new UserGeneralResponse(HttpStatus.OK);
+    }
+
+    public UserInfo getUserByManager(String username, String manager) {
+        try {
+            return userRepo.findByUserNameAndManager(username, manager);
+        } catch (Exception e) {
+            logger.error(String.valueOf(e));
+            throw new AppException("general.error");
+        }
     }
 }
